@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Venue = sequelize.define('Venue', {
+const Local = sequelize.define('Local', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -25,4 +25,4 @@ const Venue = sequelize.define('Venue', {
   },
 });
 
-module.exports = Venue;
+module.exports = Local;
