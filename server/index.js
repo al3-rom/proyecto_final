@@ -10,6 +10,8 @@ const Pedido = require('./models/Pedido');
 const Local = require('./models/Local');
 const Traduccion_producto = require('./models/Traduccion_producto');
 
+
+// Foreign Keys
 Local.hasMany(Usuario, { foreignKey: 'local_id' });
 Usuario.belongsTo(Local, { foreignKey: 'local_id' });
 
@@ -36,13 +38,27 @@ const PORT = process.env.PORT;
 app.use(cors());
 app.use(express.json());
 
+const { verificarToken } = require('./middleware/auth');
+const authRoutes = require('./routes/auth');
+const localesRoutes = require('./routes/locales');
+const productosRoutes = require('./routes/productos');
+const ordersRoutes = require('./routes/orders');
+
+app.use('/api/auth', authRoutes);
+
+app.use('/api/locales', verificarToken, localesRoutes);
+
+app.use('/api/productos', verificarToken, productosRoutes);
+
+app.use('/api/orders', verificarToken, ordersRoutes);
+
 app.get('/', (req, res) => {
-  res.json({ message: 'EcoNight Pass API funcionando' });
+  res.json({ message: 'EcoNight Pass API' });
 });
 
 sequelize.sync().then(() => {
-  console.log('Base de datos sincronizada');
+  console.log('Database synchronized');
   app.listen(PORT, () => {
-    console.log(`Server corriendo en http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
   });
 });
