@@ -4,10 +4,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
 const { verificarToken } = require('../middleware/auth');
+const upload = require('../middleware/upload');
 
-router.post('/register', async (req, res) => {
+router.post('/register', upload.single('foto_perfil'), async (req, res) => {
     try {
-        const { email, password, nombre, foto_perfil_url, saldo, rol, local_id } = req.body;
+        const { email, password, nombre } = req.body;
+        
+        let foto_perfil_url = null;
+        if (req.file) {
+            foto_perfil_url = `/uploads/${req.file.filename}`;
+        }
 
         const existe = await Usuario.findOne({ where: { email } });
         if (existe) {
@@ -21,9 +27,7 @@ router.post('/register', async (req, res) => {
             password: hashedPassword,
             nombre,
             foto_perfil_url,
-            saldo,
-            rol,
-            local_id
+            rol: 'user'
         });
 
         const token = jwt.sign(

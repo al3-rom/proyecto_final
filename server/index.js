@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const sequelize = require('./config/database');
 
@@ -37,12 +38,15 @@ const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
+// Servir archivos estáticos (las fotos de perfil)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const { verificarToken } = require('./middleware/auth');
 const authRoutes = require('./routes/auth');
 const localesRoutes = require('./routes/locales');
 const productosRoutes = require('./routes/productos');
 const ordersRoutes = require('./routes/orders');
+const staffRoutes = require('./routes/staff');
 
 app.use('/api/auth', authRoutes);
 
@@ -51,6 +55,8 @@ app.use('/api/locales', verificarToken, localesRoutes);
 app.use('/api/productos', verificarToken, productosRoutes);
 
 app.use('/api/orders', verificarToken, ordersRoutes);
+
+app.use('/api/staff', verificarToken, staffRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'EcoNight Pass API' });
