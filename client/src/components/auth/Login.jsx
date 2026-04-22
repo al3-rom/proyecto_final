@@ -44,7 +44,7 @@ export default function Login() {
 
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-black text-white p-4 font-sans relative">
+        <div className="min-h-screen flex items-center justify-center text-white p-4 font-sans relative">
             <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-50">
                 <button
                     onClick={() => {
@@ -58,7 +58,7 @@ export default function Login() {
                 </button>
             </div>
 
-            <div className="max-w-md w-full bg-[#0a0a0a] rounded-[2rem] overflow-hidden border border-zinc-700 shadow-2xl">
+            <div className="max-w-md w-full bg-[#0a0a0a]/95 backdrop-blur-3xl rounded-[2rem] overflow-hidden border border-zinc-800 border-t-zinc-700 shadow-[0_20px_50px_rgba(16,185,129,0.15)] hover:shadow-[0_20px_60px_rgba(16,185,129,0.2)] transition-shadow duration-500">
 
 
                 <div className="p-5 sm:p-10">

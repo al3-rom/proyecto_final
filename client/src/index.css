@@ -4,9 +4,14 @@
 
 html,
 body {
-  background-color: #000000;
+  background-color: #060606;
+  background-image: 
+    radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 50%),
+    radial-gradient(circle at bottom left, rgba(39, 39, 42, 0.4), transparent 50%);
+  background-attachment: fixed;
   color: #ffffff;
   overscroll-behavior-y: none;
+  min-height: 100vh;
 }
 
 @theme {

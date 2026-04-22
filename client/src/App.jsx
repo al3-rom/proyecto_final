@@ -9,13 +9,9 @@ import LanguageSplash from './components/LanguageSplash';
 
 
 function App() {
-  const [showSplash, setShowSplash] = useState(false);
-
-  useEffect(() => {
-    if (!localStorage.getItem('languageSelected')) {
-      setShowSplash(true);
-    }
-  }, []);
+  const [showSplash, setShowSplash] = useState(
+    () => !localStorage.getItem('languageSelected')
+  );
 
   if (showSplash) {
     return <LanguageSplash onComplete={() => setShowSplash(false)} />;
