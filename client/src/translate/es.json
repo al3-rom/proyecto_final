@@ -1,0 +1,33 @@
+{
+  "auth": {
+    "login": {
+      "title": "Bienvenido",
+      "subtitle": "Inicia sesión para acceder a tu cuenta.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "••••••••",
+      "submitBtn": "Iniciar Sesión",
+      "noAccount": "¿No tienes una cuenta?",
+      "registerLink": "Regístrate"
+    },
+    "register": {
+      "title": "Registro",
+      "subtitle": "Crea tu cuenta para empezar a explorar.",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "confirmPasswordLabel": "Confirmar contraseña",
+      "photoLabel": "Foto de Perfil (Opcional)",
+      "photoUpload": "Sube una imagen",
+      "submitBtn": "Registrarse",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia Sesión"
+    },
+    "errors": {
+      "loginIncorrect": "El correo o la contraseña son incorrectos.",
+      "emailExists": "Este correo electrónico ya está registrado.",
+      "passwordsMismatch": "Las contraseñas no coinciden.",
+      "unexpected": "Ha ocurrido un error inesperado al registrarte."
+    }
+  }
+}

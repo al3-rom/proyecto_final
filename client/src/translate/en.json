@@ -1,0 +1,33 @@
+{
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Log in to access your account.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "submitBtn": "Log In",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Sign up"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join us to start exploring.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "confirmPasswordLabel": "Confirm Password",
+      "photoLabel": "Profile Photo (Optional)",
+      "photoUpload": "Upload an image",
+      "submitBtn": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "errors": {
+      "loginIncorrect": "Incorrect email or password.",
+      "emailExists": "This email is already registered.",
+      "passwordsMismatch": "Passwords do not match.",
+      "unexpected": "An unexpected error occurred during registration."
+    }
+  }
+}

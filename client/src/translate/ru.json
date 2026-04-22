@@ -1,0 +1,33 @@
+{
+  "auth": {
+    "login": {
+      "title": "Добро пожаловать",
+      "subtitle": "Войдите, чтобы получить доступ к своему аккаунту.",
+      "emailLabel": "Эл. почта",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "Пароль",
+      "passwordPlaceholder": "••••••••",
+      "submitBtn": "Войти",
+      "noAccount": "Нет аккаунта?",
+      "registerLink": "Зарегистрироваться"
+    },
+    "register": {
+      "title": "Регистрация",
+      "subtitle": "Создайте аккаунт, чтобы начать.",
+      "nameLabel": "Имя",
+      "namePlaceholder": "Ваше имя",
+      "confirmPasswordLabel": "Подтвердите пароль",
+      "photoLabel": "Фото профиля (Необязательно)",
+      "photoUpload": "Загрузить изображение",
+      "submitBtn": "Зарегистрироваться",
+      "hasAccount": "Уже есть аккаунт?",
+      "loginLink": "Войти"
+    },
+    "errors": {
+      "loginIncorrect": "Неверный адрес электронной почты или пароль.",
+      "emailExists": "Этот адрес электронной почты уже зарегистрирован.",
+      "passwordsMismatch": "Пароли не совпадают.",
+      "unexpected": "Произошла непредвиденная ошибка при регистрации."
+    }
+  }
+}

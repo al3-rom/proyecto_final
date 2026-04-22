@@ -1,0 +1,204 @@
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setError } from "./authSlice";
+import { register } from "./thunks";
+import { useEffect, useState } from "react";
+import { Eye, EyeOff, AlertCircle, ImagePlus, CheckCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+export default function Register() {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [fileName, setFileName] = useState("");
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const password = e.target.password.value;
+        const confirmPassword = e.target.confirmPassword.value;
+
+        if (password !== confirmPassword) {
+            dispatch(setError("Las contraseñas no coinciden."));
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('nombre', e.target.nombre.value);
+        formData.append('email', e.target.email.value);
+        formData.append('password', password);
+        if (e.target.foto_perfil.files[0]) {
+            formData.append('foto_perfil', e.target.foto_perfil.files[0]);
+        }
+        dispatch(register(formData));
+    };
+
+    const { error, isAuthenticated } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/");
+        }
+    }, [isAuthenticated, navigate]);
+
+    useEffect(() => {
+        if (error) {
+            setTimeout(() => {
+                dispatch(setError(null));
+            }, 3000);
+        }
+    }, [error]);
+
+
+
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-black text-white p-4 font-sans">
+            <div className="max-w-xl w-full bg-[#0a0a0a] rounded-[2rem] overflow-hidden border border-zinc-700 shadow-2xl">
+
+                <div className="p-8 sm:p-8">
+                    <div className="text-center mb-5">
+                        <h1 className="text-4xl font-extrabold tracking-tight text-white mb-2">{t('auth.register.title')}</h1>
+                        <p className="text-zinc-500 text-sm font-medium">{t('auth.register.subtitle')}</p>
+                    </div>
+
+                    {error && (
+                        <div className="mb-6 p-4 bg-red-950/40 border border-red-500/50 rounded-2xl flex items-start gap-3 shadow-[0_0_20px_rgba(239,68,68,0.25)]">
+                            <AlertCircle className="h-5 w-5 shrink-0 text-red-500 mt-0.5 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                            <span className="text-sm font-semibold text-red-400 drop-shadow-[0_0_5px_rgba(239,68,68,0.5)]">
+                                {error === 'Email already registered'
+                                    ? t('auth.errors.emailExists')
+                                    : error === 'Las contraseñas no coinciden.'
+                                        ? t('auth.errors.passwordsMismatch')
+                                        : t('auth.errors.unexpected')}
+                            </span>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1" htmlFor="nombre">{t('auth.register.nameLabel')}</label>
+                                <input
+                                    id="nombre"
+                                    type="text"
+                                    placeholder={t('auth.register.namePlaceholder')}
+                                    name="nombre"
+                                    required
+                                    className="w-full bg-black border border-zinc-800 rounded-2xl px-4 py-3.5 text-white placeholder-zinc-700 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all duration-300"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1" htmlFor="email">{t('auth.login.emailLabel')}</label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    placeholder={t('auth.login.emailPlaceholder')}
+                                    name="email"
+                                    required
+                                    className="w-full bg-black border border-zinc-800 rounded-2xl px-4 py-3.5 text-white placeholder-zinc-700 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all duration-300"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1" htmlFor="password">{t('auth.login.passwordLabel')}</label>
+                            <div className="relative w-full">
+                                <input
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder={t('auth.login.passwordPlaceholder')}
+                                    name="password"
+                                    required
+                                    minLength={6}
+                                    className="w-full bg-black border border-zinc-800 rounded-2xl px-4 py-3.5 text-white placeholder-zinc-700 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all duration-300 pr-12"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-zinc-600 hover:text-white transition-colors outline-none"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1" htmlFor="confirmPassword">{t('auth.register.confirmPasswordLabel')}</label>
+                            <div className="relative w-full">
+                                <input
+                                    id="confirmPassword"
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    placeholder={t('auth.login.passwordPlaceholder')}
+                                    name="confirmPassword"
+                                    required
+                                    minLength={6}
+                                    className="w-full bg-black border border-zinc-800 rounded-2xl px-4 py-3.5 text-white placeholder-zinc-700 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all duration-300 pr-12"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-zinc-600 hover:text-white transition-colors outline-none"
+                                >
+                                    {showConfirmPassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1" htmlFor="foto_perfil">{t('auth.register.photoLabel')}</label>
+                            <label className={`flex items-center justify-center w-full bg-black border rounded-2xl px-4 py-5 text-white focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500 transition-all duration-300 cursor-pointer border-dashed ${fileName ? 'border-emerald-500/50 bg-emerald-950/10 hover:bg-emerald-950/20' : 'border-zinc-800 hover:border-zinc-700 hover:bg-[#0f0f0f]'}`}>
+                                <div className={`space-y-1.5 text-center transition-colors duration-200 ${fileName ? 'text-emerald-400' : 'text-zinc-500 hover:text-white'}`}>
+                                    {fileName ? (
+                                        <CheckCircle className="mx-auto h-5 w-5 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                                    ) : (
+                                        <ImagePlus className="mx-auto h-5 w-5" />
+                                    )}
+                                    <div className="text-sm font-medium truncate max-w-[200px] sm:max-w-[250px] px-2">
+                                        {fileName || t('auth.register.photoUpload')}
+                                    </div>
+                                </div>
+                                <input
+                                    id="foto_perfil"
+                                    type="file"
+                                    name="foto_perfil"
+                                    accept="image/*"
+                                    onChange={(e) => setFileName(e.target.files[0]?.name || "")}
+                                    className="sr-only"
+                                />
+                            </label>
+                        </div>
+
+                        <div className="pt-2">
+                            <button
+                                type="submit"
+                                className="w-full bg-emerald-500/90 hover:bg-emerald-400 text-white font-bold py-3.5 px-4 rounded-2xl transition-all duration-300 active:scale-[0.98] border border-emerald-400/50 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] hover:-translate-y-0.5"
+                            >
+                                {t('auth.register.submitBtn')}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div className="px-8 py-5 bg-[#050505] border-t border-zinc-900 text-center">
+                    <p className="text-sm text-zinc-500">
+                        {t('auth.register.hasAccount')}{' '}
+                        <Link to="/login" className="font-semibold text-white hover:text-zinc-300 transition-colors">
+                            {t('auth.register.loginLink')}
+                        </Link>
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}
