@@ -6,6 +6,7 @@ import './i18n'
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store.js';
+import 'flag-icons/css/flag-icons.min.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode >

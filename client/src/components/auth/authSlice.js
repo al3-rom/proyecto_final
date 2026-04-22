@@ -1,9 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getSavedUser = () => {
+    const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
+    if (!userStr) return null;
+    try { return JSON.parse(userStr); } catch { return null; }
+};
+const getSavedToken = () => localStorage.getItem('token') || sessionStorage.getItem('token');
+
 const initialState = {
-    user: null,
-    token: null,
-    isAuthenticated: false,
+    user: getSavedUser(),
+    token: getSavedToken(),
+    isAuthenticated: !!getSavedToken(),
     status: "idle",
     error: null,
 };
@@ -25,6 +32,10 @@ export const authSlice = createSlice({
             state.isAuthenticated = false;
             state.status = "idle";
             state.error = null;
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
         },
         setStatus: (state, action) => {
             state.status = action.payload;

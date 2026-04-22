@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+html,
+body {
+  background-color: #000000;
+  color: #ffffff;
+  overscroll-behavior-y: none;
+}
+
 @theme {
   --color-background: #121212;
   --color-surface: #1E1E1E;
@@ -22,4 +29,22 @@
 
 .animate-marquee {
   animation: marquee 80s linear infinite;
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 100s linear infinite;
+}
+
+.animate-marquee-fast {
+  animation: marquee 50s linear infinite;
 }

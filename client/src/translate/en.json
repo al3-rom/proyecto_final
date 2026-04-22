@@ -9,7 +9,8 @@
       "passwordPlaceholder": "••••••••",
       "submitBtn": "Log In",
       "noAccount": "Don't have an account?",
-      "registerLink": "Sign up"
+      "registerLink": "Sign up",
+      "rememberMe": "Remember me"
     },
     "register": {
       "title": "Create Account",
@@ -21,13 +22,23 @@
       "photoUpload": "Upload an image",
       "submitBtn": "Sign Up",
       "hasAccount": "Already have an account?",
-      "loginLink": "Log in"
+      "loginLink": "Log in",
+      "acceptTerms": "I have read and accept the ",
+      "privacyPolicy": "Privacy Policy and Data Usage"
     },
     "errors": {
       "loginIncorrect": "Incorrect email or password.",
       "emailExists": "This email is already registered.",
       "passwordsMismatch": "Passwords do not match.",
       "unexpected": "An unexpected error occurred during registration."
+    },
+    "legal": {
+      "title": "Privacy and Data Usage Policy",
+      "p1": "We prioritize the security of your information. By registering and using our platform to access entertainment services and manage your purchases, you agree to the following terms:",
+      "li1": "Data Collection: We store your basic profile information (name, email, and photo) to safely identify you at the venue's entrance or cloakroom.",
+      "li2": "Secure Purchases: When purchasing drinks, we generate encrypted tokens. We only share your name and the token receipt with the venue to validate your purchase.",
+      "li3": "Analytical Use: We strictly do not sell your personal data. Geolocation (if enabled) is used exclusively to recommend the best nearby parties.",
+      "closeBtn": "I understand and accept"
     }
   }
 }

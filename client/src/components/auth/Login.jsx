@@ -4,7 +4,7 @@ import { login } from "./thunks";
 import { useEffect, useState } from "react";
 import { setError } from "./authSlice";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, AlertCircle, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function Login() {
@@ -14,6 +14,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -21,7 +22,7 @@ export default function Login() {
             email: email,
             password: password
         };
-        dispatch(login(credentials));
+        dispatch(login({ credentials, rememberMe }));
     };
 
     const { error } = useSelector((state) => state.auth);
@@ -43,10 +44,24 @@ export default function Login() {
 
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-black text-white p-4 font-sans">
+        <div className="min-h-screen flex items-center justify-center bg-black text-white p-4 font-sans relative">
+            <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-50">
+                <button
+                    onClick={() => {
+                        localStorage.removeItem('languageSelected');
+                        window.location.reload();
+                    }}
+                    className="flex text-zinc-500 hover:text-emerald-400 p-2.5 rounded-full border border-zinc-800 hover:border-emerald-500/50 bg-[#0a0a0a] shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all duration-300"
+                    title="Change Language"
+                >
+                    <Globe className="w-5 h-5 hover:rotate-12 transition-transform duration-300" />
+                </button>
+            </div>
+
             <div className="max-w-md w-full bg-[#0a0a0a] rounded-[2rem] overflow-hidden border border-zinc-700 shadow-2xl">
 
-                <div className="p-8 sm:p-10">
+
+                <div className="p-5 sm:p-10">
                     <div className="text-center mb-10">
                         <h1 className="text-4xl font-extrabold tracking-tight text-white mb-3">{t('auth.login.title')}</h1>
                         <p className="text-zinc-500 text-sm font-medium">{t('auth.login.subtitle')}</p>
@@ -99,6 +114,22 @@ export default function Login() {
                                     )}
                                 </button>
                             </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 mb-0">
+                            <div className="flex items-center h-5">
+                                <input
+                                    id="remember"
+                                    name="remember"
+                                    type="checkbox"
+                                    checked={rememberMe}
+                                    onChange={(e) => setRememberMe(e.target.checked)}
+                                    className="w-5 h-5 appearance-none bg-black border-2 border-zinc-700 rounded-md checked:bg-emerald-500 checked:border-emerald-500 cursor-pointer transition-all flex items-center justify-center after:content-[''] after:w-2 after:h-3 after:border-white after:border-r-2 after:border-b-2 after:rotate-45 after:opacity-0 checked:after:opacity-100 after:-mt-1"
+                                />
+                            </div>
+                            <label htmlFor="remember" className="text-sm font-medium text-zinc-400 cursor-pointer select-none">
+                                {t('auth.login.rememberMe')}
+                            </label>
                         </div>
 
                         <div className="pt-6">

@@ -9,7 +9,8 @@
       "passwordPlaceholder": "••••••••",
       "submitBtn": "Iniciar Sesión",
       "noAccount": "¿No tienes una cuenta?",
-      "registerLink": "Regístrate"
+      "registerLink": "Regístrate",
+      "rememberMe": "Recordar usuario"
     },
     "register": {
       "title": "Registro",
@@ -21,13 +22,23 @@
       "photoUpload": "Sube una imagen",
       "submitBtn": "Registrarse",
       "hasAccount": "¿Ya tienes una cuenta?",
-      "loginLink": "Inicia Sesión"
+      "loginLink": "Inicia Sesión",
+      "acceptTerms": "He leído y acepto la ",
+      "privacyPolicy": "Política de Privacidad y Uso de Datos"
     },
     "errors": {
       "loginIncorrect": "El correo o la contraseña son incorrectos.",
       "emailExists": "Este correo electrónico ya está registrado.",
       "passwordsMismatch": "Las contraseñas no coinciden.",
       "unexpected": "Ha ocurrido un error inesperado al registrarte."
+    },
+    "legal": {
+      "title": "Política de Privacidad y Uso de Datos",
+      "p1": "En nuestra aplicación, priorizamos la seguridad de tu información. Al registrarte y utilizar nuestra plataforma para explorar la oferta de ocio nocturno y gestionar tus adquisiciones, aceptas los siguientes términos:",
+      "li1": "Recopilación de Datos: Guardamos tu información básica (nombre, email y foto temporal) para poder identificarte en la entrada de los o en la taquilla de los locales.",
+      "li2": "Compras Seguras: Al adquirir bebidas, generamos tokens cifrados. Compartiremos con el local únicamente tu nombre y el justificante del token para validar tu compra.",
+      "li3": "Uso Analítico: No vendemos tu información personal. Tu geolocalización (si la activas) se usa exclusivamente para recomendarte las fiestas más cercanas.",
+      "closeBtn": "Entiendo y acepto"
     }
   }
 }
