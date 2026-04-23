@@ -47,6 +47,7 @@ const localesRoutes = require('./routes/locales');
 const productosRoutes = require('./routes/productos');
 const ordersRoutes = require('./routes/orders');
 const staffRoutes = require('./routes/staff');
+const saldoRoutes = require('./routes/saldo');
 
 app.use('/api/auth', authRoutes);
 
@@ -57,6 +58,8 @@ app.use('/api/productos', verificarToken, productosRoutes);
 app.use('/api/orders', verificarToken, ordersRoutes);
 
 app.use('/api/staff', verificarToken, staffRoutes);
+
+app.use('/api/saldo', verificarToken, saldoRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'EcoNight Pass API' });

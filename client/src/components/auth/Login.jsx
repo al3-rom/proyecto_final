@@ -6,6 +6,7 @@ import { setError } from "./authSlice";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, AlertCircle, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import Logotipo from "../../assets/LogoFull.png";
 
 export default function Login() {
     const { t } = useTranslation();
@@ -63,6 +64,9 @@ export default function Login() {
 
                 <div className="p-5 sm:p-10">
                     <div className="text-center mb-10">
+                        <div className="flex justify-center mb-6">
+                            <img src={Logotipo} alt="Logo" className="w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-110 transition-transform duration-500" />
+                        </div>
                         <h1 className="text-4xl font-extrabold tracking-tight text-white mb-3">{t('auth.login.title')}</h1>
                         <p className="text-zinc-500 text-sm font-medium">{t('auth.login.subtitle')}</p>
                     </div>

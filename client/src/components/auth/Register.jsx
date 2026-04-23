@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff, AlertCircle, ImagePlus, CheckCircle, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import LegalModal from "./LegalModal";
+import Logotipo from "../../assets/LogoFull.png";
 
 export default function Register() {
     const { t } = useTranslation();
@@ -73,7 +74,10 @@ export default function Register() {
             <div className="max-w-xl w-full bg-[#0a0a0a]/95 backdrop-blur-3xl rounded-[2rem] overflow-hidden border border-zinc-800 border-t-zinc-700 shadow-[0_20px_50px_rgba(16,185,129,0.15)] hover:shadow-[0_20px_60px_rgba(16,185,129,0.2)] transition-shadow duration-500">
 
                 <div className="p-6 sm:p-8">
-                    <div className="text-center mb-4">
+                    <div className="text-center mb-6">
+                        <div className="flex justify-center mb-4">
+                            <img src={Logotipo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-110 transition-transform duration-500" />
+                        </div>
                         <h1 className="text-4xl font-extrabold tracking-tight text-white mb-1.5">{t('auth.register.title')}</h1>
                         <p className="text-zinc-500 text-sm font-medium">{t('auth.register.subtitle')}</p>
                     </div>
