@@ -34,7 +34,7 @@ export default function Nav() {
     return (
         <>
             <nav className="hidden md:flex fixed top-0 left-0 w-full bg-[#050505]/80 backdrop-blur-xl border-b border-zinc-800/60 z-50 px-10 py-3 items-center justify-between shadow-[0_4px_30px_rgba(0,0,0,0.8)] before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] before:from-emerald-900/10 before:to-transparent before:pointer-events-none">
-                <div className="flex items-center gap-3 cursor-pointer group relative z-10" onClick={() => navigate('/')}>
+                <div className="flex items-center gap-3 cursor-pointer group relative z-10">
                     <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <img src={Logotipo} alt="Logo" className="w-10 h-10 object-contain drop-shadow-[0_0_8px_rgba(16,185,129,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(16,185,129,0.8)] group-hover:scale-110 transition-all duration-300 relative z-10" />
                     <span className="font-extrabold text-2xl text-white tracking-tight group-hover:text-emerald-400 transition-colors duration-300 relative z-10">EcoNight</span>

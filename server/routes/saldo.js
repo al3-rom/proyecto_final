@@ -27,7 +27,7 @@ router.post('/recargar', verificarToken, async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        usuario.saldo += cantidad;
+        usuario.saldo = Number(usuario.saldo) + Number(cantidad);
         await usuario.save();
 
         res.json({ saldo: usuario.saldo });

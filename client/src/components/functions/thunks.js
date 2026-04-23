@@ -50,7 +50,7 @@ export const updateProfilePhoto = createAsyncThunk(
             }
             return usuarioBackend;
         } catch (error) {
-            dispatch(setError(error.response?.data?.error || "Error al subir imagen"));
+            dispatch(setError(error.response?.data?.error || "Error at upload image"));
             throw error;
         }
     }
@@ -66,7 +66,7 @@ export const changePasswordThunk = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            dispatch(setError(error.response?.data?.error === 'invalid_password' ? 'invalid_password' : "Error al cambiar contraseña"));
+            dispatch(setError(error.response?.data?.error === 'invalid_password' ? 'invalid_password' : "Error at change password"));
             throw error;
         }
     }
@@ -83,7 +83,32 @@ export const deleteProfileThunk = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            dispatch(setError(error.response?.data?.error === 'invalid_password' ? 'invalid_password' : "Error al eliminar perfil"));
+            dispatch(setError(error.response?.data?.error === 'invalid_password' ? 'invalid_password' : "Error at delete profile"));
+            throw error;
+        }
+    }
+);
+
+export const recargarSaldoThunk = createAsyncThunk(
+    "functions/recargarSaldo",
+    async (cantidad, { getState, dispatch }) => {
+        try {
+            const token = getState().auth.token;
+            const response = await axios.post(`${API_URL}/saldo/recargar`, { cantidad: Number(cantidad) }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            const currentUser = getState().auth.user;
+            const updatedUser = { ...currentUser, saldo: response.data.saldo };
+            dispatch(setUser(updatedUser));
+            
+            const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
+            if (storage.getItem('user')) {
+                storage.setItem('user', JSON.stringify(updatedUser));
+            }
+            return response.data;
+        } catch (error) {
+            dispatch(setError(error.response?.data?.error || "Error at recharge"));
             throw error;
         }
     }

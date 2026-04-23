@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { User, Mail, Wallet, Shield, Settings, LogOut, Key, Trash2, X, CheckCircle2, AlertCircle, Globe, Camera } from "lucide-react";
+import { User, Mail, Wallet, Shield, Settings, LogOut, Key, Trash2, X, CheckCircle2, AlertCircle, Globe, Camera, CreditCard, Banknote, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { fetchUserProfile, updateProfilePhoto, changePasswordThunk, deleteProfileThunk } from "./thunks";
+import { fetchUserProfile, updateProfilePhoto, changePasswordThunk, deleteProfileThunk, recargarSaldoThunk } from "./thunks";
 import { logout } from "../auth/authSlice";
 
 export default function Perfil() {
@@ -16,6 +16,7 @@ export default function Perfil() {
     const [newPassword, setNewPassword] = useState('');
     const [msg, setMsg] = useState({ type: '', text: '' });
     const [loading, setLoading] = useState(false);
+    const [rechargeAmount, setRechargeAmount] = useState(50);
     const [uploadingImg, setUploadingImg] = useState(false);
 
     const [imgError, setImgError] = useState(false);
@@ -66,6 +67,7 @@ export default function Perfil() {
         setModalType(null);
         setCurrentPassword('');
         setNewPassword('');
+        setRechargeAmount(50);
         setMsg({ type: '', text: '' });
     };
 
@@ -96,13 +98,25 @@ export default function Perfil() {
             } catch (error) {
                 setMsg({ type: 'error', text: error === 'invalid_password' ? t('perfil.invalidPassword') : t('perfil.errorOccurred') });
             }
+        } else if (modalType === 'recharge') {
+            if (!rechargeAmount || rechargeAmount <= 0 || rechargeAmount > 500) {
+                setMsg({ type: 'error', text: t('perfil.invalidAmount') || 'Cantidad inválida. Máx 500€.' });
+                setLoading(false); return;
+            }
+            try {
+                await dispatch(recargarSaldoThunk(rechargeAmount)).unwrap();
+                setMsg({ type: 'success', text: t('perfil.rechargeSuccess') || `¡Recargaste ${rechargeAmount} Tokens con éxito!` });
+                setTimeout(() => closeModal(), 2000);
+            } catch (error) {
+                setMsg({ type: 'error', text: t('perfil.errorOccurred') || 'Error al recargar.' });
+            }
         }
         setLoading(false);
     };
 
     return (
         <div className="flex justify-center items-center py-6 pb-24 animate-in fade-in zoom-in-95 duration-500 relative">
-            <div className="w-full max-w-md bg-[#0a0a0a]/80 backdrop-blur-xl border border-zinc-800/80 rounded-[2rem] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)] relative overflow-hidden group">
+            <div className="w-full max-w-md bg-[#0a0a0a]/80 backdrop-blur-xl border border-zinc-700/80 rounded-[2rem] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)] relative overflow-hidden group">
 
                 <div className="absolute -top-32 -left-32 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full group-hover:bg-emerald-500/20 transition-colors duration-700"></div>
                 <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-emerald-700/10 blur-[80px] rounded-full group-hover:bg-emerald-600/10 transition-colors duration-700"></div>
@@ -122,26 +136,26 @@ export default function Perfil() {
                         />
                         <div className="absolute inset-0 bg-emerald-500/20 rounded-full blur-[20px] animate-[pulse_3s_ease-in-out_infinite]"></div>
 
-                        <div className="relative z-10 w-32 h-32 rounded-full overflow-hidden border-2 border-emerald-500/40 shadow-[0_0_20px_rgba(16,185,129,0.2)] bg-black">
+                        <div className="relative z-10 w-40 h-40 rounded-full overflow-hidden border-2 border-emerald-700/40 shadow-[0_0_20px_rgba(16,185,129,0.2)] bg-black">
                             {imageUrl && !imgError && !uploadingImg ? (
                                 <img
                                     src={imageUrl}
                                     alt="Foto de perfil"
                                     onError={() => setImgError(true)}
-                                    className="w-full h-full object-cover  "
+                                    className="w-full h-full object-cover"
                                 />
                             ) : (
                                 <div className="w-full h-full bg-zinc-900/80 flex items-center justify-center">
                                     {uploadingImg ? (
-                                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-emerald-500 border-solid"></div>
+                                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-emerald-700 border-solid"></div>
                                     ) : (
-                                        <User size={48} className="text-zinc-500 drop-shadow-md" />
+                                        <User size={64} className="text-zinc-500 drop-shadow-md" />
                                     )}
                                 </div>
                             )}
 
                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/avatar:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                                <Camera size={32} className="text-white" />
+                                <Camera size={36} className="text-white" />
                             </div>
                         </div>
                     </div>
@@ -165,15 +179,19 @@ export default function Perfil() {
                         </div>
 
                         {user?.rol === 'user' && (
-                            <div className="flex items-center p-4 bg-emerald-950/20 backdrop-blur-sm rounded-2xl border border-emerald-500/20 hover:border-emerald-500/40 transition-colors duration-300 relative overflow-hidden group/wallet">
+                            <div 
+                                onClick={() => setModalType('recharge')}
+                                className="flex items-center p-4 bg-emerald-950/20 backdrop-blur-sm rounded-2xl border border-emerald-500/20 hover:border-emerald-500/40 transition-colors duration-300 relative overflow-hidden group/wallet cursor-pointer"
+                            >
                                 <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover/wallet:opacity-100 transition-opacity"></div>
                                 <Wallet className="text-emerald-500 mr-4 relative z-10" size={24} />
                                 <div className="flex-1 relative z-10">
-                                    <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest mb-0.5">{t('perfil.balance') || 'Saldo'}</p>
+                                    <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest mb-0.5">{t('perfil.balance') || 'Saldo'} <span className="lowercase text-[9px] opacity-70 ml-1">{t('perfil.clickToRecharge')}</span></p>
                                     <p className="text-2xl font-black text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.4)]">
-                                        {user?.saldo ?? 0} <span className="text-xs font-semibold opacity-60">{t('perfil.tokens') || 'Tokens'}</span>
+                                        {Number(user?.saldo ?? 0).toFixed(2)} <span className="text-xs font-semibold opacity-60">{t('perfil.tokens') || '€'}</span>
                                     </p>
                                 </div>
+                                <Plus size={20} className="text-emerald-500 opacity-0 group-hover/wallet:opacity-100 transition-opacity absolute right-6" />
                             </div>
                         )}
                     </div>
@@ -216,12 +234,14 @@ export default function Perfil() {
                                 </div>
                             </button>
 
-                            <button onClick={() => setModalType('delete')} className="w-full flex items-center justify-between p-3.5 bg-red-950/20 hover:bg-red-900/30 border border-red-900/30 rounded-xl transition-all duration-300 group/btn mt-2">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-red-900/50 rounded-lg group-hover/btn:bg-red-800/50 transition-colors"><Trash2 size={18} className="text-red-400" /></div>
-                                    <span className="text-sm font-bold text-red-400">{t('perfil.deleteAccount') || 'Eliminar Cuenta'}</span>
-                                </div>
-                            </button>
+                            {user?.rol === 'user' && (
+                                <button onClick={() => setModalType('delete')} className="w-full flex items-center justify-between p-3.5 bg-red-950/20 hover:bg-red-900/30 border border-red-900/30 rounded-xl transition-all duration-300 group/btn mt-2">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-red-900/50 rounded-lg group-hover/btn:bg-red-800/50 transition-colors"><Trash2 size={18} className="text-red-400" /></div>
+                                        <span className="text-sm font-bold text-red-400">{t('perfil.deleteAccount') || 'Eliminar Cuenta'}</span>
+                                    </div>
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -240,12 +260,12 @@ export default function Perfil() {
                             <X size={24} />
                         </button>
 
-                        <div className="mb-6 flex items-center gap-3">
+                        <div className="mb-4 flex items-center gap-3">
                             <div className={`p-3 rounded-2xl ${modalType === 'delete' ? 'bg-red-500/10 text-red-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
-                                {modalType === 'delete' ? <Trash2 size={24} /> : <Key size={24} />}
+                                {modalType === 'delete' ? <Trash2 size={24} /> : modalType === 'recharge' ? <CreditCard size={24} /> : <Key size={24} />}
                             </div>
                             <h3 className="text-xl font-bold text-white">
-                                {modalType === 'delete' ? (t('perfil.deleteAccount') || 'Eliminar Cuenta') : (t('perfil.changePassword') || 'Cambiar Contraseña')}
+                                {modalType === 'delete' ? (t('perfil.deleteAccount') || 'Eliminar Cuenta') : modalType === 'recharge' ? (t('perfil.rechargeBalance') || 'Recargar Saldo') : (t('perfil.changePassword') || 'Cambiar Contraseña')}
                             </h3>
                         </div>
 
@@ -262,31 +282,91 @@ export default function Perfil() {
                             </div>
                         )}
 
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">{t('perfil.currentPassword') || 'Contraseña Actual'}</label>
-                                <input
-                                    type="password"
-                                    value={currentPassword}
-                                    onChange={(e) => setCurrentPassword(e.target.value)}
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-zinc-500 transition-colors"
-                                    placeholder="••••••••"
-                                />
-                            </div>
-
-                            {modalType === 'password' && (
+                        {modalType === 'recharge' && (
+                            <div className="space-y-4 mb-6">
+                                <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 flex justify-between items-center">
+                                    <div className="flex items-center gap-3">
+                                        <Banknote className="text-emerald-500" size={24} />
+                                        <div>
+                                            <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider">{t('perfil.currentBalance') || 'Saldo actual'}</p>
+                                            <p className="text-xl font-black text-white">{Number(user?.saldo ?? 0).toFixed(2)} <span className="text-sm font-semibold opacity-60">{t('perfil.tokens') || '€'}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div>
-                                    <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">{t('perfil.newPassword') || 'Nueva Contraseña'}</label>
+                                    <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">{t('perfil.selectAmount') || 'Selecciona cantidad'}</label>
+                                    <div className="grid grid-cols-4 gap-2 mb-3">
+                                        {[10, 50, 100, 500].map(amount => (
+                                            <button 
+                                                key={amount}
+                                                onClick={() => setRechargeAmount(amount)}
+                                                className={`py-2 rounded-xl text-sm font-bold border transition-all ${Number(rechargeAmount) === amount ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-[inset_0_0_10px_rgba(16,185,129,0.2)] scale-105' : 'bg-zinc-900/50 border-zinc-800 text-zinc-400 hover:border-zinc-500'} active:scale-95`}
+                                            >
+                                                {amount} €
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="relative mt-2">
+                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <span className="text-zinc-500 font-bold">€</span>
+                                        </div>
+                                        <input
+                                            type="number"
+                                            value={rechargeAmount}
+                                            onChange={(e) => setRechargeAmount(e.target.value > 500 ? 500 : e.target.value)}
+                                            className="w-full bg-zinc-900/80 border border-zinc-800 text-white pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-600"
+                                            placeholder={t('perfil.otherAmount') || 'Otra cantidad...'}
+                                            max="500"
+                                            min="1"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {modalType !== 'recharge' && (
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">{t('perfil.currentPassword') || 'Contraseña Actual'}</label>
                                     <input
                                         type="password"
-                                        value={newPassword}
-                                        onChange={(e) => setNewPassword(e.target.value)}
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
+                                        value={currentPassword}
+                                        onChange={(e) => setCurrentPassword(e.target.value)}
+                                        className="w-full bg-zinc-900/50 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-zinc-500 transition-colors"
                                         placeholder="••••••••"
                                     />
                                 </div>
-                            )}
 
+                                {modalType === 'password' && (
+                                    <div>
+                                        <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">{t('perfil.newPassword') || 'Nueva Contraseña'}</label>
+                                        <input
+                                            type="password"
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            className="w-full bg-zinc-900/50 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
+                                            placeholder="••••••••"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {modalType === 'recharge' ? (
+                            <button
+                                onClick={handleSubmit}
+                                disabled={loading || !rechargeAmount || rechargeAmount <= 0}
+                                className="w-full mt-2 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold tracking-wide transition-all transform active:scale-95 bg-white hover:bg-gray-200 text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] disabled:opacity-50 disabled:active:scale-100"
+                            >
+                                {loading ? '...' : (
+                                    <>
+                                        <svg viewBox="0 0 384 512" className="h-5 w-5 fill-current"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.3 48.6-.9 87.2-87.3 100.9-114.7-47-21.7-60.5-62.9-60-104zM226.7 93.6c20.3-24.9 31.5-55.6 28.3-86.6-28.5 1.5-61 18.5-81.2 43.1-20.9 24.9-31.5 56.4-28.3 87.3 30.6 2.3 62-17.3 81.2-43.8z"/></svg> 
+                                        Pay {rechargeAmount || 0} {t('perfil.tokens') || '€'}
+                                    </>
+                                )}
+                            </button>
+                        ) : (
                             <button
                                 onClick={handleSubmit}
                                 disabled={loading}
@@ -297,7 +377,7 @@ export default function Perfil() {
                             >
                                 {loading ? '...' : (t('perfil.confirm') || 'Confirmar')}
                             </button>
-                        </div>
+                        )}
                     </div>
                 </div>
             )}

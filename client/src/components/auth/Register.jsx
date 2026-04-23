@@ -42,7 +42,7 @@ export default function Register() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate("/");
+            navigate("/perfil");
         }
     }, [isAuthenticated, navigate]);
 

@@ -3,10 +3,13 @@ import { logout } from "./auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import Nav from "./main/Nav";
 import { Routes, Route } from "react-router-dom";
-import Lugares from "./functions/Lugares";
-import ListaBebidas from "./functions/ListaBebidas";
+import Lugares from "./functions/user/Lugares";
+import ListaBebidas from "./functions/user/ListaBebidas";
 import Perfil from "./functions/Perfil";
 import Error from "./functions/Error";
+import MenuBebidas from "./functions/admin/MenuBebidas";
+import Employers from "./functions/admin/Employers";
+import ScanerQR from "./functions/staff/ScanerQR";
 
 
 export default function Home() {
@@ -40,9 +43,19 @@ export default function Home() {
                                 <Route path="/bebidas" element={<ListaBebidas />} />
                             </>
                         )}
-
+                        {role === 'admin' && (
+                            <>
+                                <Route path="/" element={<Employers />} />
+                                <Route path="/admin/empleados" element={<Employers />} />
+                                <Route path="/admin/menu" element={<MenuBebidas />} />
+                            </>
+                        )}
+                        {role === 'staff' && (
+                            <>
+                                <Route path="/" element={<ScanerQR />} />
+                            </>
+                        )}
                         <Route path="/perfil" element={<Perfil />} />
-
                         <Route path="*" element={<Error />} />
                     </Routes>
                 </main>

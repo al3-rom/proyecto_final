@@ -89,6 +89,10 @@ router.delete('/delete-profile', verificarToken, async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
+        if (usuario.rol === 'admin' || usuario.rol === 'staff') {
+            return res.status(403).json({ error: 'Admins and Staff cannot delete their accounts for security reasons' });
+        }
+
         const validPassword = await bcrypt.compare(password, usuario.password);
         if (!validPassword) {
             return res.status(401).json({ error: 'invalid_password' });

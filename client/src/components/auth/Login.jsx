@@ -39,7 +39,7 @@ export default function Login() {
     const { isAuthenticated } = useSelector((state) => state.auth);
     useEffect(() => {
         if (isAuthenticated) {
-            navigate("/");
+            navigate("/perfil");
         }
     }, [isAuthenticated]);
 
