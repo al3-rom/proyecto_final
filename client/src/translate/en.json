@@ -40,5 +40,38 @@
       "li3": "Analytical Use: We strictly do not sell your personal data. Geolocation (if enabled) is used exclusively to recommend the best nearby parties.",
       "closeBtn": "I understand and accept"
     }
+  },
+  "nav": {
+    "lugares": "Venues",
+    "bebidas": "Drinks",
+    "perfil": "Profile",
+    "scanner": "Scanner",
+    "empleados": "Employees",
+    "menu": "Menu"
+  },
+  "error": {
+    "title": "404",
+    "accessDenied": "Access Denied",
+    "description": "The page you are trying to access does not exist or you do not have permission to view it with your current role.",
+    "backBtn": "Go Back"
+  },
+  "perfil": {
+    "settingsTitle": "Profile Settings",
+    "changePassword": "Change Password",
+    "deleteAccount": "Delete Account",
+    "logout": "Log Out",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "successChange": "Password changed successfully",
+    "invalidPassword": "The current password is incorrect",
+    "deleteWarning": "Are you sure you want to delete your account? This action cannot be undone.",
+    "tokens": "Tokens",
+    "roleUser": "User",
+    "roleAdmin": "Admin",
+    "roleStaff": "Staff",
+    "balance": "Available Balance",
+    "language": "Language"
   }
 }

@@ -38,7 +38,7 @@ const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
-// Servir archivos estáticos (las fotos de perfil)
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const { verificarToken } = require('./middleware/auth');
@@ -48,6 +48,7 @@ const productosRoutes = require('./routes/productos');
 const ordersRoutes = require('./routes/orders');
 const staffRoutes = require('./routes/staff');
 const saldoRoutes = require('./routes/saldo');
+const usuarioRoutes = require('./routes/usuario');
 
 app.use('/api/auth', authRoutes);
 
@@ -60,6 +61,8 @@ app.use('/api/orders', verificarToken, ordersRoutes);
 app.use('/api/staff', verificarToken, staffRoutes);
 
 app.use('/api/saldo', verificarToken, saldoRoutes);
+
+app.use('/api/usuario', verificarToken, usuarioRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'EcoNight Pass API' });

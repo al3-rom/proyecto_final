@@ -36,7 +36,7 @@ router.post('/register', upload.single('foto_perfil'), async (req, res) => {
             { expiresIn: '24h' }
         );
 
-        res.status(201).json({ usuario, token });
+        res.status(201).json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre}, token });
     } catch (err) {
         res.status(500).json({ error: 'Error registering user', details: err.message });
     }
@@ -63,7 +63,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: '24h' }
         );
 
-        res.json({ usuario, token });
+        res.json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre }, token });
     } catch (err) {
         res.status(500).json({ error: 'Error logging in', details: err.message });
     }

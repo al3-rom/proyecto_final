@@ -40,5 +40,38 @@
       "li3": "Uso Analítico: No vendemos tu información personal. Tu geolocalización (si la activas) se usa exclusivamente para recomendarte las fiestas más cercanas.",
       "closeBtn": "Entiendo y acepto"
     }
+  },
+  "nav": {
+    "lugares": "Lugares",
+    "bebidas": "Bebidas",
+    "perfil": "Perfil",
+    "scanner": "Escáner",
+    "empleados": "Empleados",
+    "menu": "Menú"
+  },
+  "error": {
+    "title": "404",
+    "accessDenied": "Acceso Denegado",
+    "description": "La página a la que intentas acceder no existe o no tienes permisos con tu rol actual para verla.",
+    "backBtn": "Volver Atrás"
+  },
+  "perfil": {
+    "settingsTitle": "Ajustes de Perfil",
+    "changePassword": "Cambiar Contraseña",
+    "deleteAccount": "Eliminar Cuenta",
+    "logout": "Cerrar Sesión",
+    "currentPassword": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "successChange": "Contraseña cambiada con éxito",
+    "invalidPassword": "La contraseña actual es incorrecta",
+    "deleteWarning": "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
+    "tokens": "Tokens",
+    "roleUser": "Usuario",
+    "roleAdmin": "Administrador",
+    "roleStaff": "Staff",
+    "balance": "Saldo Disponible",
+    "language": "Idioma"
   }
 }

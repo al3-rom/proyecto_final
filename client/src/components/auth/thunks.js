@@ -47,7 +47,5 @@ export const register = createAsyncThunk("auth/register", async (formData, { dis
         }
         return response.data;
     } catch (error) {
-        dispatch(setError(error.response?.data?.error || "Error en el registro"));
-        throw error;
     }
 });
