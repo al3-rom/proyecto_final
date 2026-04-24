@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { User, Mail, Wallet, Shield, Settings, LogOut, Key, Trash2, X, CheckCircle2, AlertCircle, Globe, Camera, CreditCard, Banknote, Plus } from "lucide-react";
+import { User, Mail, Wallet, Shield, Settings, LogOut, Key, Trash2, X, CheckCircle2, AlertCircle, Globe, Camera, CreditCard, Banknote, Plus, Eye, EyeOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { fetchUserProfile, updateProfilePhoto, changePasswordThunk, deleteProfileThunk, recargarSaldoThunk } from "./thunks";
 import { logout } from "../auth/authSlice";
@@ -18,6 +18,8 @@ export default function Perfil() {
     const [loading, setLoading] = useState(false);
     const [rechargeAmount, setRechargeAmount] = useState(50);
     const [uploadingImg, setUploadingImg] = useState(false);
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
 
     const [imgError, setImgError] = useState(false);
     const fileInputRef = useRef(null);
@@ -69,6 +71,8 @@ export default function Perfil() {
         setNewPassword('');
         setRechargeAmount(50);
         setMsg({ type: '', text: '' });
+        setShowCurrentPassword(false);
+        setShowNewPassword(false);
     };
 
     const handleSubmit = async () => {
@@ -179,7 +183,7 @@ export default function Perfil() {
                         </div>
 
                         {user?.rol === 'user' && (
-                            <div 
+                            <div
                                 onClick={() => setModalType('recharge')}
                                 className="flex items-center p-4 bg-emerald-950/20 backdrop-blur-sm rounded-2xl border border-emerald-500/20 hover:border-emerald-500/40 transition-colors duration-300 relative overflow-hidden group/wallet cursor-pointer"
                             >
@@ -293,12 +297,12 @@ export default function Perfil() {
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div>
                                     <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">{t('perfil.selectAmount') || 'Selecciona cantidad'}</label>
                                     <div className="grid grid-cols-4 gap-2 mb-3">
                                         {[10, 50, 100, 500].map(amount => (
-                                            <button 
+                                            <button
                                                 key={amount}
                                                 onClick={() => setRechargeAmount(amount)}
                                                 className={`py-2 rounded-xl text-sm font-bold border transition-all ${Number(rechargeAmount) === amount ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-[inset_0_0_10px_rgba(16,185,129,0.2)] scale-105' : 'bg-zinc-900/50 border-zinc-800 text-zinc-400 hover:border-zinc-500'} active:scale-95`}
@@ -329,25 +333,43 @@ export default function Perfil() {
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">{t('perfil.currentPassword') || 'Contraseña Actual'}</label>
-                                    <input
-                                        type="password"
-                                        value={currentPassword}
-                                        onChange={(e) => setCurrentPassword(e.target.value)}
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-zinc-500 transition-colors"
-                                        placeholder="••••••••"
-                                    />
+                                    <div className="relative">
+                                        <input
+                                            type={showCurrentPassword ? "text" : "password"}
+                                            value={currentPassword}
+                                            onChange={(e) => setCurrentPassword(e.target.value)}
+                                            className="w-full bg-zinc-900/50 border border-zinc-800 text-white pl-4 pr-12 py-3 rounded-xl focus:outline-none focus:border-zinc-500 transition-colors"
+                                            placeholder="••••••••"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
+                                        >
+                                            {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                        </button>
+                                    </div>
                                 </div>
 
                                 {modalType === 'password' && (
                                     <div>
                                         <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">{t('perfil.newPassword') || 'Nueva Contraseña'}</label>
-                                        <input
-                                            type="password"
-                                            value={newPassword}
-                                            onChange={(e) => setNewPassword(e.target.value)}
-                                            className="w-full bg-zinc-900/50 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
-                                            placeholder="••••••••"
-                                        />
+                                        <div className="relative">
+                                            <input
+                                                type={showNewPassword ? "text" : "password"}
+                                                value={newPassword}
+                                                onChange={(e) => setNewPassword(e.target.value)}
+                                                className="w-full bg-zinc-900/50 border border-zinc-800 text-white pl-4 pr-12 py-3 rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
+                                                placeholder="••••••••"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowNewPassword(!showNewPassword)}
+                                                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
+                                            >
+                                                {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                            </button>
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -361,7 +383,7 @@ export default function Perfil() {
                             >
                                 {loading ? '...' : (
                                     <>
-                                        <svg viewBox="0 0 384 512" className="h-5 w-5 fill-current"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.3 48.6-.9 87.2-87.3 100.9-114.7-47-21.7-60.5-62.9-60-104zM226.7 93.6c20.3-24.9 31.5-55.6 28.3-86.6-28.5 1.5-61 18.5-81.2 43.1-20.9 24.9-31.5 56.4-28.3 87.3 30.6 2.3 62-17.3 81.2-43.8z"/></svg> 
+                                        <svg viewBox="0 0 384 512" className="h-5 w-5 fill-current"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.3 48.6-.9 87.2-87.3 100.9-114.7-47-21.7-60.5-62.9-60-104zM226.7 93.6c20.3-24.9 31.5-55.6 28.3-86.6-28.5 1.5-61 18.5-81.2 43.1-20.9 24.9-31.5 56.4-28.3 87.3 30.6 2.3 62-17.3 81.2-43.8z" /></svg>
                                         Pay {rechargeAmount || 0} {t('perfil.tokens') || '€'}
                                     </>
                                 )}

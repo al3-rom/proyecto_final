@@ -8,6 +8,15 @@ router.post('/register', verificarRol('admin'), async (req, res) => {
     try {
         const { nombre, email, password, local_id } = req.body;
         
+        if (!password || password.length < 6) {
+            return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+        }
+
+        const existe = await Usuario.findOne({ where: { email } });
+        if (existe) {
+            return res.status(400).json({ error: 'Email already registered' });
+        }
+
         let foto_perfil_url = null;
         if (req.file) {
             foto_perfil_url = `/uploads/${req.file.filename}`;
@@ -21,7 +30,7 @@ router.post('/register', verificarRol('admin'), async (req, res) => {
             foto_perfil_url,
             rol: 'staff'
         });
-        res.status(201).json({ usuario: { id: staff.id, email: staff.email, local_id: staff.local_id, rol: staff.rol, saldo: staff.saldo, nombre: staff.nombre }, token });
+        res.status(201).json({ usuario: { id: staff.id, email: staff.email, local_id: staff.local_id, rol: staff.rol, saldo: staff.saldo, nombre: staff.nombre } });
     } catch (err) {
         res.status(500).json({ error: 'Error creating staff', details: err.message });
     }

@@ -52,7 +52,7 @@ export default function Home() {
                         )}
                         {role === 'staff' && (
                             <>
-                                <Route path="/" element={<ScanerQR />} />
+                                <Route path="/scan" element={<ScanerQR />} />
                             </>
                         )}
                         <Route path="/perfil" element={<Perfil />} />

@@ -10,6 +10,10 @@ router.post('/register', upload.single('foto_perfil'), async (req, res) => {
     try {
         const { email, password, nombre } = req.body;
         
+        if (!password || password.length < 6) {
+            return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+        }
+        
         let foto_perfil_url = null;
         if (req.file) {
             foto_perfil_url = `/uploads/${req.file.filename}`;
@@ -36,7 +40,7 @@ router.post('/register', upload.single('foto_perfil'), async (req, res) => {
             { expiresIn: '24h' }
         );
 
-        res.status(201).json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre}, token });
+        res.status(201).json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre, local_id: usuario.local_id }, token });
     } catch (err) {
         res.status(500).json({ error: 'Error registering user', details: err.message });
     }
@@ -63,7 +67,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: '24h' }
         );
 
-        res.json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre }, token });
+        res.json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre, local_id: usuario.local_id }, token });
     } catch (err) {
         res.status(500).json({ error: 'Error logging in', details: err.message });
     }

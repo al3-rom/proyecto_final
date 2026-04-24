@@ -12,7 +12,7 @@ router.get('/me', verificarToken, async (req, res) => {
         if (!usuario) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre, foto_perfil_url: usuario.foto_perfil_url } });
+        res.json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre, foto_perfil_url: usuario.foto_perfil_url, local_id: usuario.local_id } });
     } catch (err) {
         res.status(500).json({ error: 'Error getting user', details: err.message });
     }

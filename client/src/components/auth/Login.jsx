@@ -30,11 +30,12 @@ export default function Login() {
 
     useEffect(() => {
         if (error) {
+            setPassword(""); // Clear password field
             setTimeout(() => {
                 dispatch(setError(null));
             }, 3000);
         }
-    }, [error]);
+    }, [error, dispatch]);
 
     const { isAuthenticated } = useSelector((state) => state.auth);
     useEffect(() => {
@@ -74,7 +75,9 @@ export default function Login() {
                     {error && (
                         <div className="mb-8 p-4 bg-red-950/40 border border-red-500/50 rounded-2xl flex items-start gap-3 shadow-[0_0_20px_rgba(239,68,68,0.25)]">
                             <AlertCircle className="h-5 w-5 shrink-0 text-red-500 mt-0.5 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
-                            <span className="text-sm font-semibold text-red-400 drop-shadow-[0_0_5px_rgba(239,68,68,0.5)]">{error === "Incorrect password" ? t('auth.errors.loginIncorrect') : t('auth.errors.unexpected')}</span>
+                            <span className="text-sm font-semibold text-red-400 drop-shadow-[0_0_5px_rgba(239,68,68,0.5)]">
+                                {(error === "Incorrect password" || error === "User not found") ? t('auth.errors.loginIncorrect') : t('auth.errors.unexpected')}
+                            </span>
                         </div>
                     )}
 
