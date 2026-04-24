@@ -4,6 +4,7 @@ const { verificarRol } = require('../middleware/auth');
 const Producto = require('../models/Producto');
 const Traduccion_producto = require('../models/Traduccion_producto');
 const upload = require('../middleware/upload');
+const sequelize = require('../config/database');
 
 
 router.get('/', async (req, res) => {
@@ -47,12 +48,15 @@ router.post('/', verificarRol('admin'), upload.single('foto'), async (req, res) 
 
 router.put('/:id', verificarRol('admin'), upload.single('foto'), async (req, res) => {
     try {
+        const { precio, traducciones } = req.body;
         const producto = await Producto.findByPk(req.params.id);
         if (!producto) return res.status(404).json({ error: 'Product not found' });
 
-        if (req.file) {
-            await producto.update({ foto_url: `/uploads/${req.file.filename}` });
-        }
+        const updateData = {};
+        if (precio !== undefined) updateData.precio = precio;
+        if (req.file) updateData.foto_url = `/uploads/${req.file.filename}`;
+
+        await producto.update(updateData);
 
         if (req.body.traducciones) {
             const traduccionesArr = JSON.parse(req.body.traducciones);
@@ -83,6 +87,41 @@ router.put('/:id', verificarRol('admin'), upload.single('foto'), async (req, res
 });
 
 
+
+router.delete('/all', verificarRol('admin'), async (req, res) => {
+    try {
+        const { local_id } = req.query;
+        if (!local_id) return res.status(400).json({ error: 'Local ID required' });
+        // Security check: Admin can only delete from their own local
+        let userLocalId = req.user.local_id;
+        if (userLocalId === undefined) {
+            const u = await require('../models/Usuario').findByPk(req.user.id);
+            userLocalId = u?.local_id;
+        }
+
+        if (req.user.rol !== 'superadmin' && parseInt(userLocalId) !== parseInt(local_id)) {
+            return res.status(403).json({ error: 'You can only delete products from your own venue' });
+        }
+
+        const t = await sequelize.transaction();
+        try {
+            const products = await Producto.findAll({ where: { local_id } });
+            const ids = products.map(p => p.id);
+
+            await Traduccion_producto.destroy({ where: { producto_id: ids } }, { transaction: t });
+            await Producto.destroy({ where: { id: ids } }, { transaction: t });
+
+            await t.commit();
+            res.json({ message: 'All products deleted' });
+        } catch (err) {
+            await t.rollback();
+            throw err;
+        }
+    } catch (err) {
+        res.status(500).json({ error: 'Error deleting all products', details: err.message });
+    }
+});
+
 router.delete('/:id', verificarRol('admin'), async (req, res) => {
     try {
         const producto = await Producto.findByPk(req.params.id);
@@ -92,6 +131,46 @@ router.delete('/:id', verificarRol('admin'), async (req, res) => {
         res.json({ message: 'Product deleted' });
     } catch (err) {
         res.status(500).json({ error: 'Error deleting product', details: err.message });
+    }
+});
+
+
+router.post('/bulk', verificarRol('admin'), async (req, res) => {
+    const t = await sequelize.transaction();
+    try {
+        const { products, local_id } = req.body;
+        if (!products || !Array.isArray(products)) {
+            return res.status(400).json({ error: 'Invalid products array' });
+        }
+
+        for (const pData of products) {
+            const producto = await Producto.create({ 
+                precio: parseFloat(pData.precio) || 0, 
+                foto_url: null, 
+                local_id 
+            }, { transaction: t });
+
+            const translations = [
+                { codigo_idioma: 'es', nombre: pData.nombre_es, descripcion: pData.descripcion_es },
+                { codigo_idioma: 'ru', nombre: pData.nombre_ru, descripcion: pData.descripcion_ru },
+                { codigo_idioma: 'en', nombre: pData.nombre_en, descripcion: pData.descripcion_en }
+            ];
+
+            for (const trans of translations) {
+                await Traduccion_producto.create({
+                    producto_id: producto.id,
+                    nombre: trans.nombre || '—',
+                    descripcion: trans.descripcion || '',
+                    codigo_idioma: trans.codigo_idioma
+                }, { transaction: t });
+            }
+        }
+
+        await t.commit();
+        res.status(201).json({ message: `${products.length} products imported successfully` });
+    } catch (err) {
+        await t.rollback();
+        res.status(500).json({ error: 'Error in bulk import', details: err.message });
     }
 });
 

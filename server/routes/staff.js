@@ -75,4 +75,29 @@ router.delete('/:id', verificarRol('admin'), async (req, res) => {
     }
 });
 
+router.delete('/all/local', verificarRol('admin'), async (req, res) => {
+    try {
+        const { local_id } = req.query;
+        if (!local_id) return res.status(400).json({ error: 'Local ID required' });
+        let userLocalId = req.user.local_id;
+        if (userLocalId === undefined) {
+            const u = await Usuario.findByPk(req.user.id);
+            userLocalId = u?.local_id;
+        }
+
+        if (req.user.rol !== 'superadmin' && parseInt(userLocalId) !== parseInt(local_id)) {
+            return res.status(403).json({ error: 'You can only delete staff from your own venue' });
+        }
+        await Usuario.destroy({
+            where: {
+                local_id,
+                rol: 'staff'
+            }
+        });
+        res.json({ message: 'All staff deleted' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error deleting all staff', details: err.message });
+    }
+});
+
 module.exports = router;

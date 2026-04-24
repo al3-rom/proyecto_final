@@ -106,6 +106,9 @@
       "createSuccess": "Empleado creado con éxito",
       "updateSuccess": "Empleado actualizado con éxito",
       "deleteSuccess": "Empleado eliminado con éxito",
+      "deleteAll": "Eliminar Todo",
+      "deleteAllConfirm": "¿Estás seguro de que quieres eliminar a TODOS los empleados?",
+      "deleteAllSuccess": "Personal eliminado correctamente",
       "errorNoLocalId": "Tu cuenta de administrador no tiene un local asignado. No puedes crear empleados."
     },
     "menu": {
@@ -130,6 +133,8 @@
       "descLabel": "Descripción",
       "namePlaceholder": "Nombre del producto",
       "descPlaceholder": "Descripción del producto",
+      "priceLabel": "Precio (€)",
+      "pricePlaceholder": "Ej: 12.50",
       "confirmCreate": "¿Confirmas la creación de la consumición en los 3 idiomas?",
       "confirmDelete": "¿Estás seguro de que quieres eliminar esta consumición?",
       "deleteTitle": "Eliminar Consumición",
@@ -137,10 +142,22 @@
       "createSuccess": "Consumición creada con éxito",
       "updateSuccess": "Consumición actualizada con éxito",
       "deleteSuccess": "Consumición eliminada con éxito",
+      "deleteAll": "Eliminar Todo",
+      "deleteAllConfirm": "¿Estás seguro de que quieres eliminar TODAS las consumiciones?",
+      "deleteAllSuccess": "Menú vaciado correctamente",
       "noProducts": "No hay consumiciones en el menú",
       "searchPlaceholder": "Buscar consumición...",
       "errorNoPhoto": "Sube una foto antes de continuar",
-      "errorFillFields": "Rellena el nombre y la descripción antes de continuar"
+      "errorFillFields": "Rellena el nombre y la descripción antes de continuar",
+      "importBtn": "Importar CSV",
+      "bulkTitle": "Importación Masiva",
+      "bulkSubtitle": "Sube varios productos a la vez",
+      "bulkInstructions": "Carga un archivo .csv. Asegúrate de usar el punto y coma (;) como separador de columnas para que el sistema lea bien los datos.",
+      "bulkColumns": "Columnas necesarias: nombre_es; descripcion_es; nombre_ru; descripcion_ru; nombre_en; descripcion_en; precio",
+      "bulkTemplate": "Descargar Plantilla",
+      "bulkSuccess": "Importación completada con éxito",
+      "bulkError": "Error al importar el archivo",
+      "bulkFormatError": "Formato de CSV incorrecto. Usa la plantilla."
     }
   }
 }

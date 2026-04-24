@@ -108,17 +108,51 @@ export const updateProduct = createAsyncThunk(
     }
 );
 
-export const deleteProduct = createAsyncThunk(
-    "admin/deleteProduct",
-    async (id, { getState, rejectWithValue }) => {
-        try {
-            const token = getState().auth.token;
-            await axios.delete(`${API_URL}/productos/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            return id;
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.error || "Error deleting product");
-        }
+export const deleteProduct = createAsyncThunk("admin/deleteProduct", async (id, { getState, rejectWithValue }) => {
+    try {
+        const token = getState().auth.token;
+        await axios.delete(`${API_URL}/productos/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return id;
+    } catch (err) {
+        return rejectWithValue(err.response?.data?.error || "Error deleting product");
     }
-);
+});
+
+export const bulkCreateProducts = createAsyncThunk("admin/bulkCreateProducts", async (data, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const token = getState().auth.token;
+        const response = await axios.post(`${API_URL}/productos/bulk`, data, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        dispatch(fetchProducts());
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(err.response?.data?.error || "Error in bulk import");
+    }
+});
+
+export const deleteAllProducts = createAsyncThunk("admin/deleteAllProducts", async (localId, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const token = getState().auth.token;
+        await axios.delete(`${API_URL}/productos/all?local_id=${localId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        dispatch(fetchProducts());
+    } catch (err) {
+        return rejectWithValue(err.response?.data?.error || "Error deleting all products");
+    }
+});
+
+export const deleteAllStaff = createAsyncThunk("admin/deleteAllStaff", async (localId, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const token = getState().auth.token;
+        await axios.delete(`${API_URL}/staff/all/local?local_id=${localId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        dispatch(fetchStaff());
+    } catch (err) {
+        return rejectWithValue(err.response?.data?.error || "Error deleting all staff");
+    }
+});

@@ -107,6 +107,9 @@
       "createSuccess": "Сотрудник успешно создан",
       "updateSuccess": "Данные сотрудника обновлены",
       "deleteSuccess": "Сотрудник удален",
+      "deleteAll": "Удалить все",
+      "deleteAllConfirm": "Вы уверены, что хотите удалить ВСЕХ сотрудников?",
+      "deleteAllSuccess": "Весь персонал удален",
       "errorNoLocalId": "Ваша учетная запись администратора не привязана к заведению. Вы не можете создавать сотрудников."
     },
     "menu": {
@@ -131,6 +134,8 @@
       "descLabel": "Описание",
       "namePlaceholder": "Название продукта",
       "descPlaceholder": "Описание продукта",
+      "priceLabel": "Цена (€)",
+      "pricePlaceholder": "Напр: 12.50",
       "confirmCreate": "Подтвердите создание позиции на 3 языках?",
       "confirmDelete": "Вы уверены, что хотите удалить эту позицию?",
       "deleteTitle": "Удалить позицию",
@@ -138,10 +143,21 @@
       "createSuccess": "Позиция успешно создана",
       "updateSuccess": "Позиция обновлена",
       "deleteSuccess": "Позиция удалена",
+      "deleteAll": "Удалить все",
+      "deleteAllConfirm": "Вы уверены, что хотите удалить ВСЕ позиции?",
+      "deleteAllSuccess": "Меню полностью очищено",
       "noProducts": "Нет позиций в меню",
       "searchPlaceholder": "Поиск позиции...",
       "errorNoPhoto": "Загрузите фото перед продолжением",
-      "errorFillFields": "Заполните название и описание перед продолжением"
+      "errorFillFields": "Заполните название и описание перед продолжением",
+      "importBtn": "Импорт CSV",
+      "bulkTitle": "Массовый импорт",
+      "bulkSubtitle": "Загрузите несколько товаров сразу",
+      "bulkInstructions": "Загрузите .csv файл. Обязательно используйте точку с запятой (;) в качестве разделителя колонок, чтобы система могла правильно прочитать данные.",
+      "bulkColumns": "Необходимые колонки: nombre_es; descripcion_es; nombre_ru; descripcion_ru; nombre_en; descripcion_en; precio",
+      "bulkTemplate": "Скачать шаблон",
+      "bulkSuccess": "Импорт успешно завершен",
+      "bulkError": "Ошибка при импорте файла"
     }
   }
 }

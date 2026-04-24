@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Plus, Edit2, Trash2, X, Save, User, Mail, Shield, MapPin, AlertCircle, CheckCircle2 } from "lucide-react";
-import { fetchStaff, createStaff, updateStaff, deleteStaff } from "./thunks";
+import { fetchStaff, createStaff, updateStaff, deleteStaff, deleteAllStaff } from "./thunks";
 
 export default function Employers() {
     const dispatch = useDispatch();
@@ -17,6 +17,7 @@ export default function Employers() {
     const [msg, setMsg] = useState({ type: "", text: "" });
     const [loading, setLoading] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
     const [staffToDelete, setStaffToDelete] = useState(null);
 
     useEffect(() => {
@@ -95,6 +96,20 @@ export default function Employers() {
         }
     };
 
+    const handleDeleteAll = async () => {
+        setLoading(true);
+        try {
+            await dispatch(deleteAllStaff(adminLocalId)).unwrap();
+            setShowDeleteAllModal(false);
+            setMsg({ type: "success", text: t("admin.staff.deleteAllSuccess") });
+            setTimeout(() => setMsg({ type: "", text: "" }), 3000);
+        } catch (error) {
+            alert(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="p-6 pb-24 max-w-5xl mx-auto animate-in fade-in duration-500">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -107,13 +122,24 @@ export default function Employers() {
                         {t("admin.staff.count", { count: staff.length })}
                     </p>
                 </div>
-                <button
-                    onClick={() => handleOpenModal()}
-                    className="flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-2xl transition-all active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
-                >
-                    <Plus size={20} />
-                    {t("admin.staff.addBtn")}
-                </button>
+                <div className="flex gap-3">
+                    {staff.length > 0 && (
+                        <button
+                            onClick={() => setShowDeleteAllModal(true)}
+                            className="flex items-center gap-2 px-5 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold rounded-2xl transition-all border border-red-500/20"
+                        >
+                            <Trash2 size={18} />
+                            {t("admin.staff.deleteAll")}
+                        </button>
+                    )}
+                    <button
+                        onClick={() => handleOpenModal()}
+                        className="flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-2xl transition-all active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                    >
+                        <Plus size={20} />
+                        {t("admin.staff.addBtn")}
+                    </button>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -276,6 +302,31 @@ export default function Employers() {
                                 <button
                                     disabled={loading}
                                     onClick={handleDelete}
+                                    className="py-3.5 bg-red-500 hover:bg-red-400 text-white font-black rounded-2xl transition-all active:scale-95 shadow-[0_10px_20px_rgba(239,68,68,0.2)] disabled:opacity-50 flex items-center justify-center"
+                                >
+                                    {loading ? <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-white border-solid"></div> : t("admin.staff.deleteBtn")}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {showDeleteAllModal && (
+                <div onClick={() => setShowDeleteAllModal(false)} className="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
+                    <div onClick={(e) => e.stopPropagation()} className="bg-[#0f0f0f] border border-zinc-800 w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl relative animate-in zoom-in-95 duration-300">
+                        <div className="flex flex-col items-center text-center">
+                            <div className="w-16 h-16 bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500 mb-6">
+                                <AlertCircle size={32} />
+                            </div>
+                            <h2 className="text-xl font-black text-white mb-2">{t("admin.staff.deleteAll")}</h2>
+                            <p className="text-zinc-500 text-sm mb-8">{t("admin.staff.deleteAllConfirm")}</p>
+                            <div className="grid grid-cols-2 gap-3 w-full">
+                                <button onClick={() => setShowDeleteAllModal(false)} className="py-3.5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold rounded-2xl transition-all active:scale-95">
+                                    {t("admin.staff.cancelBtn")}
+                                </button>
+                                <button
+                                    disabled={loading}
+                                    onClick={handleDeleteAll}
                                     className="py-3.5 bg-red-500 hover:bg-red-400 text-white font-black rounded-2xl transition-all active:scale-95 shadow-[0_10px_20px_rgba(239,68,68,0.2)] disabled:opacity-50 flex items-center justify-center"
                                 >
                                     {loading ? <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-white border-solid"></div> : t("admin.staff.deleteBtn")}
