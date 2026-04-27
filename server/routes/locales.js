@@ -3,6 +3,7 @@ const router = express.Router();
 const { verificarRol } = require('../middleware/auth');
 const Local = require('../models/Local');
 const Producto = require('../models/Producto');
+const Traduccion_producto = require('../models/Traduccion_producto');
 
 router.get('/', async (req, res) => {
     try {
@@ -27,7 +28,10 @@ router.get('/:id', async (req, res) => {
 
 router.get('/:id/productos', async (req, res) => {
     try {
-        const productos = await Producto.findAll({ where: { local_id: req.params.id } });
+        const productos = await Producto.findAll({ 
+            where: { local_id: req.params.id },
+            include: [{ model: Traduccion_producto, as: 'Traduccion_productos' }]
+        });
         res.json(productos);
     } catch (err) {
         res.status(500).json({ error: 'Error getting products', details: err.message });

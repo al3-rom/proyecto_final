@@ -160,5 +160,42 @@
       "bulkError": "Error importing file",
       "bulkFormatError": "Invalid CSV format. Please use the template."
     }
+  },
+  "user": {
+    "lugares": {
+      "title": "Explore Venues",
+      "searchPlaceholder": "Search by name...",
+      "cityPlaceholder": "City",
+      "streetPlaceholder": "Street",
+      "filterBtn": "Filters",
+      "searchBtn": "Search",
+      "selectBtn": "Select",
+      "noLocales": "No venues found",
+      "backToList": "Choose another venue",
+      "menuTitle": "Available Menu"
+    },
+    "menu": {
+      "searchPlaceholder": "Search item...",
+      "buyBtn": "Buy",
+      "noProducts": "This venue has no products available",
+      "insufficientBalance": "Insufficient balance",
+      "productNotFound": "Product not found",
+      "purchaseSuccess": "Purchase successful!"
+    },
+    "bebidas": {
+      "title": "My Drinks",
+      "subtitle": "Here are your purchased drinks ready to enjoy.",
+      "noOrders": "You haven't bought any drinks yet.",
+      "buyMore": "Go to Venues",
+      "detailBtn": "Details",
+      "useBtn": "Use",
+      "qrTitle": "Your QR Code",
+      "qrSubtitle": "Show this code to the venue staff to validate your drink.",
+      "backToList": "Back to list",
+      "statusEntregado": "Delivered",
+      "statusPendiente": "Available",
+      "mixerLabel": "Mixed with:",
+      "descriptionLabel": "Description"
+    }
   }
 }

@@ -159,5 +159,42 @@
       "bulkSuccess": "Импорт успешно завершен",
       "bulkError": "Ошибка при импорте файла"
     }
+  },
+  "user": {
+    "lugares": {
+      "title": "Исследуйте заведения",
+      "searchPlaceholder": "Поиск по названию...",
+      "cityPlaceholder": "Город",
+      "streetPlaceholder": "Улица",
+      "filterBtn": "Фильтры",
+      "searchBtn": "Найти",
+      "selectBtn": "Выбрать",
+      "noLocales": "Заведения не найдены",
+      "backToList": "Выбрать другое заведение",
+      "menuTitle": "Доступное меню"
+    },
+    "menu": {
+      "searchPlaceholder": "Поиск позиции...",
+      "buyBtn": "Купить",
+      "noProducts": "В этом заведении нет доступных товаров",
+      "insufficientBalance": "Недостаточно средств",
+      "productNotFound": "Товар не найден",
+      "purchaseSuccess": "Покупка успешно совершена!"
+    },
+    "bebidas": {
+      "title": "Мои напитки",
+      "subtitle": "Здесь находятся ваши купленные напитки, готовые к использованию.",
+      "noOrders": "Вы еще не купили ни одного напитка.",
+      "buyMore": "Перейти к заведениям",
+      "detailBtn": "Подробнее",
+      "useBtn": "Использовать",
+      "qrTitle": "Ваш QR-код",
+      "qrSubtitle": "Покажите этот код персоналу заведения для подтверждения заказа.",
+      "backToList": "Вернуться к списку",
+      "statusEntregado": "Выдано",
+      "statusPendiente": "Доступно",
+      "mixerLabel": "Смешано с:",
+      "descriptionLabel": "Описание"
+    }
   }
 }

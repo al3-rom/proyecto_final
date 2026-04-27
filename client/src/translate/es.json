@@ -159,5 +159,42 @@
       "bulkError": "Error al importar el archivo",
       "bulkFormatError": "Formato de CSV incorrecto. Usa la plantilla."
     }
+  },
+  "user": {
+    "lugares": {
+      "title": "Explora Lugares",
+      "searchPlaceholder": "Buscar por nombre...",
+      "cityPlaceholder": "Ciudad",
+      "streetPlaceholder": "Calle",
+      "filterBtn": "Filtros",
+      "searchBtn": "Buscar",
+      "selectBtn": "Elegir",
+      "noLocales": "No se encontraron locales",
+      "backToList": "Elegir otro local",
+      "menuTitle": "Menú disponible"
+    },
+    "menu": {
+      "searchPlaceholder": "Buscar consumición...",
+      "buyBtn": "Comprar",
+      "noProducts": "Este local no tiene productos disponibles",
+      "insufficientBalance": "Saldo insuficiente",
+      "productNotFound": "Producto no encontrado",
+      "purchaseSuccess": "¡Compra realizada con éxito!"
+    },
+    "bebidas": {
+      "title": "Mis Consumiciones",
+      "subtitle": "Aquí tienes tus bebidas adquiridas listas para disfrutar.",
+      "noOrders": "Aún no has comprado ninguna bebida.",
+      "buyMore": "Ir a Lugares",
+      "detailBtn": "Detalles",
+      "useBtn": "Utilizar",
+      "qrTitle": "Tu Código QR",
+      "qrSubtitle": "Muestra este código al staff del local para validar tu consumición.",
+      "backToList": "Volver a la lista",
+      "statusEntregado": "Entregado",
+      "statusPendiente": "Disponible",
+      "mixerLabel": "Mezclado con:",
+      "descriptionLabel": "Descripción"
+    }
   }
 }

@@ -13,23 +13,23 @@ const Traduccion_producto = require('./models/Traduccion_producto');
 
 
 // Foreign Keys
-Local.hasMany(Usuario, { foreignKey: 'local_id' });
-Usuario.belongsTo(Local, { foreignKey: 'local_id' });
+Local.hasMany(Usuario, { as: 'usuarios', foreignKey: 'local_id' });
+Usuario.belongsTo(Local, { as: 'local', foreignKey: 'local_id' });
 
-Local.hasMany(Producto, { foreignKey: 'local_id' });
-Producto.belongsTo(Local, { foreignKey: 'local_id' });
+Local.hasMany(Producto, { as: 'productos', foreignKey: 'local_id' });
+Producto.belongsTo(Local, { as: 'local', foreignKey: 'local_id' });
 
-Producto.hasMany(Traduccion_producto, { foreignKey: 'producto_id' });
-Traduccion_producto.belongsTo(Producto, { foreignKey: 'producto_id' });
+Producto.hasMany(Traduccion_producto, { as: 'Traduccion_productos', foreignKey: 'producto_id' });
+Traduccion_producto.belongsTo(Producto, { as: 'producto', foreignKey: 'producto_id' });
 
-Usuario.hasMany(Pedido, { foreignKey: 'usuario_id' });
-Pedido.belongsTo(Usuario, { foreignKey: 'usuario_id' });
+Usuario.hasMany(Pedido, { as: 'pedidos', foreignKey: 'usuario_id' });
+Pedido.belongsTo(Usuario, { as: 'usuario', foreignKey: 'usuario_id' });
 
-Producto.hasMany(Pedido, { foreignKey: 'producto_id' });
-Pedido.belongsTo(Producto, { foreignKey: 'producto_id' });
+Producto.hasMany(Pedido, { as: 'pedidos', foreignKey: 'producto_id' });
+Pedido.belongsTo(Producto, { as: 'producto', foreignKey: 'producto_id' });
 
-Local.hasMany(Pedido, { foreignKey: 'local_id' });
-Pedido.belongsTo(Local, { foreignKey: 'local_id' });
+Local.hasMany(Pedido, { as: 'pedidos', foreignKey: 'local_id' });
+Pedido.belongsTo(Local, { as: 'local', foreignKey: 'local_id' });
 
 Pedido.belongsTo(Usuario, { as: 'staff', foreignKey: 'staff_id' });
 

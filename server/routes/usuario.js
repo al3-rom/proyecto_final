@@ -46,7 +46,7 @@ router.put('/update-profile', verificarToken, upload.single('foto_perfil'), asyn
         if (password) {
             const validPassword = await bcrypt.compare(password, usuario.password);
             if (!validPassword) {
-                return res.status(401).json({ error: 'invalid_password' });
+                return res.status(401).json({ error: 'perfil.invalidPassword' });
             }
             usuario.password = await bcrypt.hash(password, 10);
         }
@@ -69,7 +69,7 @@ router.put('/change-password', verificarToken, async (req, res) => {
 
         const validPassword = await bcrypt.compare(currentPassword, usuario.password);
         if (!validPassword) {
-            return res.status(401).json({ error: 'invalid_password' });
+            return res.status(401).json({ error: 'perfil.invalidPassword' });
         }
 
         usuario.password = await bcrypt.hash(newPassword, 10);
@@ -95,7 +95,7 @@ router.delete('/delete-profile', verificarToken, async (req, res) => {
 
         const validPassword = await bcrypt.compare(password, usuario.password);
         if (!validPassword) {
-            return res.status(401).json({ error: 'invalid_password' });
+            return res.status(401).json({ error: 'perfil.invalidPassword' });
         }
 
         await usuario.destroy();

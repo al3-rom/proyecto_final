@@ -24,7 +24,7 @@ export default function Register() {
         const confirmPassword = e.target.confirmPassword.value;
 
         if (password !== confirmPassword) {
-            dispatch(setError("Las contraseñas no coinciden."));
+            dispatch(setError("auth.errors.passwordsMismatch"));
             return;
         }
 
@@ -86,11 +86,7 @@ export default function Register() {
                         <div className="mb-4 p-3 bg-red-950/40 border border-red-500/50 rounded-2xl flex items-start gap-3 shadow-[0_0_20px_rgba(239,68,68,0.25)]">
                             <AlertCircle className="h-5 w-5 shrink-0 text-red-500 mt-0.5 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
                             <span className="text-sm font-semibold text-red-400 drop-shadow-[0_0_5px_rgba(239,68,68,0.5)]">
-                                {error === 'Email already registered'
-                                    ? t('auth.errors.emailExists')
-                                    : error === 'Las contraseñas no coinciden.'
-                                        ? t('auth.errors.passwordsMismatch')
-                                        : t('auth.errors.unexpected')}
+                                {t(error)}
                             </span>
                         </div>
                     )}

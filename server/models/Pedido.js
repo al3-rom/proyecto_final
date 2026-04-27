@@ -34,7 +34,6 @@ const Pedido = sequelize.define('Pedido', {
     },
     validated_at: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
         allowNull: true
     },
 });

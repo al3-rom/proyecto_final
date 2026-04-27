@@ -43,9 +43,16 @@ export const authSlice = createSlice({
         setError: (state, action) => {
             state.error = action.payload;
         },
+        updateBalance: (state, action) => {
+            if (state.user) {
+                state.user.saldo = action.payload;
+                const storage = localStorage.getItem('user') ? localStorage : sessionStorage;
+                storage.setItem('user', JSON.stringify(state.user));
+            }
+        }
     },
 });
 
-export const { setUser, setToken, logout, setStatus, setError } = authSlice.actions;
+export const { setUser, setToken, logout, setStatus, setError, updateBalance } = authSlice.actions;
 
 export default authSlice.reducer;

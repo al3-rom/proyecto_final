@@ -21,7 +21,7 @@ router.post('/register', upload.single('foto_perfil'), async (req, res) => {
 
         const existe = await Usuario.findOne({ where: { email } });
         if (existe) {
-            return res.status(400).json({ error: 'Email already registered' });
+            return res.status(400).json({ error: 'auth.errors.emailExists' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -42,7 +42,7 @@ router.post('/register', upload.single('foto_perfil'), async (req, res) => {
 
         res.status(201).json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre, local_id: usuario.local_id }, token });
     } catch (err) {
-        res.status(500).json({ error: 'Error registering user', details: err.message });
+        res.status(500).json({ error: 'auth.errors.unexpected', details: err.message });
     }
 });
 
@@ -53,12 +53,12 @@ router.post('/login', async (req, res) => {
         const usuario = await Usuario.findOne({ where: { email } });
 
         if (!usuario) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'auth.errors.loginIncorrect' });
         }
 
         const passwordValido = await bcrypt.compare(password, usuario.password);
         if (!passwordValido) {
-            return res.status(401).json({ error: 'Incorrect password' });
+            return res.status(401).json({ error: 'auth.errors.loginIncorrect' });
         }
 
         const token = jwt.sign(
@@ -69,7 +69,7 @@ router.post('/login', async (req, res) => {
 
         res.json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre, local_id: usuario.local_id }, token });
     } catch (err) {
-        res.status(500).json({ error: 'Error logging in', details: err.message });
+        res.status(500).json({ error: 'auth.errors.unexpected', details: err.message });
     }
 });
 

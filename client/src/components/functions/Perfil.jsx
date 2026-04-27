@@ -112,7 +112,7 @@ export default function Perfil() {
                 setMsg({ type: 'success', text: t('perfil.rechargeSuccess') || `¡Recargaste ${rechargeAmount} Tokens con éxito!` });
                 setTimeout(() => closeModal(), 2000);
             } catch (error) {
-                setMsg({ type: 'error', text: t('perfil.errorOccurred') || 'Error al recargar.' });
+                setMsg({ type: 'error', text: t(error) });
             }
         }
         setLoading(false);
