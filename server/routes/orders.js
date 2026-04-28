@@ -23,8 +23,8 @@ router.post('/', verificarRol('user'), async (req, res) => {
             return res.status(400).json({ error: 'user.menu.insufficientBalance' });
         }
 
-        const tempId = Date.now();
-        const qr_code = generarQr(tempId);
+        const uniqueId = `${req.usuario.id}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        const qr_code = generarQr(uniqueId);
 
         const t = await sequelize.transaction();
 
@@ -69,6 +69,11 @@ router.get('/by-qr/:qr_code', verificarRol('staff'), async (req, res) => {
             return res.status(404).json({ error: 'user.bebidas.errorNotFound' });
         }
 
+        // Seguridad: Un empleado solo puede ver pedidos de su propio local
+        if (req.usuario.rol !== 'superadmin' && req.usuario.local_id !== pedido.local_id) {
+            return res.status(403).json({ error: 'No tienes permiso para ver pedidos de este local' });
+        }
+
         res.status(200).json(pedido);
     } catch (err) {
         res.status(500).json({ error: 'Error fetching order by QR', details: err.message });
@@ -101,6 +106,12 @@ router.put('/:id/validate', verificarRol('staff'), async (req, res) => {
         if (!pedido) {
             return res.status(404).json({ error: 'user.bebidas.errorNotFound' });
         }
+
+        // Seguridad: Un empleado solo puede validar pedidos de su propio local
+        if (req.usuario.rol !== 'superadmin' && req.usuario.local_id !== pedido.local_id) {
+            return res.status(403).json({ error: 'No tienes permiso para validar en este local' });
+        }
+
         pedido.estado = 'Entregado';
         pedido.staff_id = req.usuario.id;
         pedido.validated_at = new Date();

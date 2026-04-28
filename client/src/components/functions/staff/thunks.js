@@ -9,7 +9,7 @@ export const fetchOrderByQR = createAsyncThunk(
     async (qrCode, { dispatch }) => {
         dispatch(setLoading(true));
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             const response = await axios.get(`${API_URL}/orders/by-qr/${qrCode}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -28,7 +28,7 @@ export const validateOrder = createAsyncThunk(
     async (orderId, { dispatch }) => {
         dispatch(setLoading(true));
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             await axios.put(`${API_URL}/orders/${orderId}/validate`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
