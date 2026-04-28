@@ -73,15 +73,22 @@ router.post('/admins', async (req, res) => {
         const { email, password, nombre, local_id } = req.body;
         const existe = await Usuario.findOne({ where: { email } });
         if (existe) return res.status(400).json({ error: 'El email ya está registrado' });
+        
         const hashedPassword = await bcrypt.hash(password, 10);
         const admin = await Usuario.create({
             email,
             password: hashedPassword,
             nombre,
             rol: 'admin',
-            local_id
+            local_id: local_id === "" ? null : local_id
         });
-        res.status(201).json({ id: admin.id, email: admin.email, nombre: admin.nombre });
+
+        const adminConLocal = await Usuario.findByPk(admin.id, {
+            include: [{ model: Local, as: 'local', attributes: ['id', 'nombre'] }],
+            attributes: { exclude: ['password'] }
+        });
+        
+        res.status(201).json(adminConLocal);
     } catch (err) {
         res.status(500).json({ error: 'Error al crear administrador', details: err.message });
     }
@@ -92,12 +99,25 @@ router.put('/admins/:id', async (req, res) => {
         const { nombre, email, password, local_id } = req.body;
         const admin = await Usuario.findByPk(req.params.id);
         if (!admin) return res.status(404).json({ error: 'Administrador no encontrado' });
-        const updateData = { nombre, email, local_id };
+        
+        const updateData = { 
+            nombre, 
+            email, 
+            local_id: local_id === "" ? null : local_id 
+        };
+        
         if (password && password.trim() !== "") {
             updateData.password = await bcrypt.hash(password, 10);
         }
+        
         await admin.update(updateData);
-        res.json({ id: admin.id, email: admin.email, nombre: admin.nombre });
+
+        const adminConLocal = await Usuario.findByPk(admin.id, {
+            include: [{ model: Local, as: 'local', attributes: ['id', 'nombre'] }],
+            attributes: { exclude: ['password'] }
+        });
+        
+        res.json(adminConLocal);
     } catch (err) {
         res.status(500).json({ error: 'Error al actualizar administrador', details: err.message });
     }
