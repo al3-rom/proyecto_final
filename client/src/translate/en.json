@@ -190,6 +190,7 @@
   "user": {
     "lugares": {
       "title": "Explore Venues",
+      "loading": "Loading venues...",
       "searchPlaceholder": "Search by name...",
       "cityPlaceholder": "City",
       "streetPlaceholder": "Street",

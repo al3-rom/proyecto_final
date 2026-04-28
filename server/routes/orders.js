@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { verificarRol } = require('../middleware/auth');
+const { verificarToken, verificarRol } = require('../middleware/auth');
+
+router.use(verificarToken);
 const Pedido = require('../models/Pedido');
 const { generarQr } = require('../utils/qr');
 const Producto = require('../models/Producto');

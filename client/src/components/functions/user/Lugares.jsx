@@ -18,7 +18,8 @@ export default function Lugares() {
     const [showFilters, setShowFilters] = useState(false);
     const [notification, setNotification] = useState(null);
 
-    const BASE_URL = import.meta.env.VITE_API_URL.replace("/api", "");
+    const apiUrl = import.meta.env.VITE_API_URL || "";
+    const BASE_URL = apiUrl.replace("/api", "");
 
     useEffect(() => {
         if (localesStatus === "idle") {
@@ -214,7 +215,7 @@ export default function Lugares() {
             {localesStatus === "loading" && (
                 <div className="flex flex-col items-center justify-center py-32">
                     <div className="w-16 h-16 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
-                    <p className="text-zinc-500 font-medium animate-pulse">Cargando locales...</p>
+                    <p className="text-zinc-500 font-medium animate-pulse">{t("user.lugares.loading")}</p>
                 </div>
             )}
 

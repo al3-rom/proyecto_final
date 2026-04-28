@@ -40,7 +40,7 @@ export default function ListaBebidas() {
         return (
             <div className="flex flex-col items-center justify-center py-32">
                 <div className="w-16 h-16 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
-                <p className="text-zinc-500 font-medium animate-pulse">Cargando tus bebidas...</p>
+                <p className="text-zinc-500 font-medium animate-pulse">{t("user.bebidas.loading")}</p>
             </div>
         );
     }

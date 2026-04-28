@@ -189,6 +189,7 @@
   "user": {
     "lugares": {
       "title": "Explora Lugares",
+      "loading": "Cargando locales...",
       "searchPlaceholder": "Buscar por nombre...",
       "cityPlaceholder": "Ciudad",
       "streetPlaceholder": "Calle",
@@ -210,6 +211,7 @@
     "bebidas": {
       "title": "Mis Consumiciones",
       "subtitle": "Aquí tienes tus bebidas adquiridas listas para disfrutar.",
+      "loading": "Cargando tus bebidas...",
       "noOrders": "Aún no has comprado ninguna bebida.",
       "buyMore": "Ir a Lugares",
       "detailBtn": "Detalles",

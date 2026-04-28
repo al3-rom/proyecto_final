@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const { verificarRol } = require('../middleware/auth');
+const { verificarToken, verificarRol } = require('../middleware/auth');
+
+router.use(verificarToken);
 const Usuario = require('../models/Usuario');
 
 router.post('/register', verificarRol('admin'), async (req, res) => {

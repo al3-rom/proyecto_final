@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { verificarRol } = require('../middleware/auth');
+const { verificarToken, verificarRol } = require('../middleware/auth');
 const Producto = require('../models/Producto');
 const Traduccion_producto = require('../models/Traduccion_producto');
 const upload = require('../middleware/upload');
@@ -18,6 +18,8 @@ router.get('/', async (req, res) => {
     }
 });
 
+
+router.use(verificarToken);
 
 router.post('/', verificarRol('admin'), upload.single('foto'), async (req, res) => {
     try {
