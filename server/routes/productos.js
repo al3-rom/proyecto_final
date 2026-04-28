@@ -10,7 +10,7 @@ const sequelize = require('../config/database');
 router.get('/', async (req, res) => {
     try {
         const productos = await Producto.findAll({
-            include: [{ model: Traduccion_producto }]
+            include: [{ model: Traduccion_producto, as: 'Traduccion_productos' }]
         });
         res.json(productos);
     } catch (err) {
@@ -37,7 +37,7 @@ router.post('/', verificarRol('admin'), upload.single('foto'), async (req, res) 
         }
 
         const productoConTraducciones = await Producto.findByPk(producto.id, {
-            include: [{ model: Traduccion_producto }]
+            include: [{ model: Traduccion_producto, as: 'Traduccion_productos' }]
         });
         res.status(201).json(productoConTraducciones);
     } catch (err) {
@@ -78,7 +78,7 @@ router.put('/:id', verificarRol('admin'), upload.single('foto'), async (req, res
         }
 
         const productoActualizado = await Producto.findByPk(producto.id, {
-            include: [{ model: Traduccion_producto }]
+            include: [{ model: Traduccion_producto, as: 'Traduccion_productos' }]
         });
         res.json(productoActualizado);
     } catch (err) {
