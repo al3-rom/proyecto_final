@@ -106,3 +106,6 @@ router.delete('/delete-profile', verificarToken, async (req, res) => {
 });
 
 module.exports = router;
+
+
+

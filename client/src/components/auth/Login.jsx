@@ -30,7 +30,7 @@ export default function Login() {
 
     useEffect(() => {
         if (error) {
-            setPassword(""); // Clear password field
+            setPassword(""); 
             setTimeout(() => {
                 dispatch(setError(null));
             }, 3000);
@@ -162,3 +162,6 @@ export default function Login() {
         </div>
     );
 }
+
+
+

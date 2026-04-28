@@ -4,7 +4,7 @@ const path = require('path');
 require('dotenv').config();
 const sequelize = require('./config/database');
 
-// Importar modelos
+
 const Usuario = require('./models/Usuario');
 const Producto = require('./models/Producto');
 const Pedido = require('./models/Pedido');
@@ -12,7 +12,7 @@ const Local = require('./models/Local');
 const Traduccion_producto = require('./models/Traduccion_producto');
 
 
-// Foreign Keys
+
 Local.hasMany(Usuario, { as: 'usuarios', foreignKey: 'local_id' });
 Usuario.belongsTo(Local, { as: 'local', foreignKey: 'local_id' });
 
@@ -50,6 +50,8 @@ const staffRoutes = require('./routes/staff');
 const saldoRoutes = require('./routes/saldo');
 const usuarioRoutes = require('./routes/usuario');
 
+const superadminRoutes = require('./routes/superadmin');
+
 app.use('/api/auth', authRoutes);
 
 app.use('/api/locales', verificarToken, localesRoutes);
@@ -64,13 +66,19 @@ app.use('/api/saldo', verificarToken, saldoRoutes);
 
 app.use('/api/usuario', verificarToken, usuarioRoutes);
 
+app.use('/api/superadmin', superadminRoutes);
+
 app.get('/', (req, res) => {
   res.json({ message: 'EcoNight Pass API' });
 });
 
 sequelize.sync().then(() => {
   console.log('Database synchronized');
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 });
+
+
+
+

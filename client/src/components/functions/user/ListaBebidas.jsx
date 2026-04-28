@@ -11,7 +11,7 @@ export default function ListaBebidas() {
     const { t, i18n } = useTranslation();
     const { orders, ordersStatus } = useSelector((state) => state.user);
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const [view, setView] = useState("list"); // list, detail, qr
+    const [view, setView] = useState("list");
     const [selectedLocalId, setSelectedLocalId] = useState(null);
 
     useEffect(() => {
@@ -153,7 +153,6 @@ export default function ListaBebidas() {
         );
     }
 
-    // Group orders by Local
     const groupedOrders = orders.reduce((acc, order) => {
         const localId = order.local_id;
         if (!acc[localId]) {
@@ -193,7 +192,7 @@ export default function ListaBebidas() {
                     </button>
                 </div>
             ) : selectedLocalId === null ? (
-                // Step 1: Show list of locals where user has drinks
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {groups.map((group, idx) => (
                         <div
@@ -230,7 +229,7 @@ export default function ListaBebidas() {
                     ))}
                 </div>
             ) : (
-                // Step 2: Show drinks for selected local
+
                 <div className="animate-in fade-in slide-in-from-right-4 duration-500">
                     <button
                         onClick={() => setSelectedLocalId(null)}
@@ -301,3 +300,6 @@ export default function ListaBebidas() {
         </div>
     );
 }
+
+
+

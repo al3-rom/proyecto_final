@@ -28,8 +28,10 @@
     },
     "errors": {
       "loginIncorrect": "Неверный адрес электронной почты или пароль.",
+      "userNotFound": "Пользователь с таким адресом электронной почты не найден.",
       "emailExists": "Этот адрес электронной почты уже зарегистрирован.",
       "passwordsMismatch": "Пароли не совпадают.",
+      "passwordShort": "Пароль должен состоять минимум из 6 символов.",
       "unexpected": "Произошла непредвиденная ошибка."
     },
     "legal": {
@@ -47,7 +49,8 @@
     "perfil": "Профиль",
     "scanner": "Сканер",
     "empleados": "Сотрудники",
-    "menu": "Меню"
+    "menu": "Меню",
+    "superadmin": "Супер Панель"
   },
   "error": {
     "title": "404",
@@ -79,6 +82,7 @@
     "roleUser": "Пользователь",
     "roleAdmin": "Администратор",
     "roleStaff": "Сотрудник",
+    "roleSuper": "Супер Админ",
     "balance": "Доступный Баланс",
     "language": "Язык"
   },
@@ -160,6 +164,28 @@
       "bulkError": "Ошибка при импорте файла"
     }
   },
+  "scanner": {
+    "title": "СКАНЕР",
+    "subtitle": "Валидация заказов",
+    "startBtn": "Включить камеру",
+    "cancelBtn": "Отмена",
+    "searching": "Поиск заказа...",
+    "alreadyValidated": "УЖЕ ВЫДАНО",
+    "userLabel": "Пользователь",
+    "localLabel": "Заведение",
+    "confirmBtn": "ПОДТВЕРДИТЬ ВЫДАЧУ",
+    "scanAnother": "СКАНИРОВАТЬ ДРУГОЙ",
+    "successTitle": "ВЫДАНО!",
+    "successMsg": "Заказ был успешно подтвержден.",
+    "scanNext": "СЛЕДУЮЩИЙ",
+    "errorTitle": "ОШИБКА",
+    "retryBtn": "ПОВТОРИТЬ",
+    "insecureWarning": "Для работы камеры требуется HTTPS. Используйте ПК или включите защищенное соединение.",
+    "orLabel": "ИЛИ",
+    "uploadBtn": "Выбрать фото из галереи",
+    "cameraError": "Ошибка доступа к камере",
+    "noCodeFound": "QR-код не найден в изображении"
+  },
   "user": {
     "lugares": {
       "title": "Исследуйте заведения",
@@ -194,7 +220,45 @@
       "statusEntregado": "Выдано",
       "statusPendiente": "Доступно",
       "mixerLabel": "Смешано с:",
-      "descriptionLabel": "Описание"
+      "descriptionLabel": "Описание",
+      "errorNotFound": "Заказ не найден."
     }
+  },
+  "superadmin": {
+    "title": "SUPER DASHBOARD",
+    "localesTab": "Заведения",
+    "adminsTab": "Администраторы",
+    "exitBtn": "Выйти из панели",
+    "localesTitle": "Управление заведениями",
+    "adminsTitle": "Управление админами",
+    "subtitle": "Управление глобальными ресурсами платформы",
+    "newLocal": "НОВОЕ ЗАВЕДЕНИЕ",
+    "newAdmin": "НОВЫЙ АДМИНИСТРАТОР",
+    "adminsCount": "{{count}} Админов назначено",
+    "editLocal": "Редактировать заведение",
+    "editAdmin": "Редактировать администратора",
+    "localName": "Название заведения",
+    "city": "Город",
+    "street": "Улица / Адрес",
+    "localPhoto": "Фото заведения",
+    "selectImage": "Выбрать изображение",
+    "createLocalBtn": "СОЗДАТЬ ЗАВЕДЕНИЕ",
+    "saveChanges": "СОХРАНИТЬ ИЗМЕНЕНИЯ",
+    "adminName": "Полное имя",
+    "adminEmail": "Email для входа",
+    "adminPass": "Начальный пароль",
+    "adminPassEdit": "Новый пароль (опционально)",
+    "assignLocal": "Назначить заведение",
+    "selectLocal": "Выберите заведение...",
+    "createAdminBtn": "СОЗДАТЬ АДМИНИSTRАТОРА",
+    "updateAdminBtn": "ОБНОВИТЬ АДМИНА",
+    "tableAdmin": "Администратор",
+    "tableContact": "Контакт",
+    "tableLocal": "Назначенное заведение",
+    "tableActions": "Действия",
+    "successLocalCreated": "Заведение успешно создано",
+    "successLocalUpdated": "Заведение обновлено",
+    "successAdminCreated": "Администратор успешно создан",
+    "successAdminUpdated": "Администратор обновлен"
   }
 }

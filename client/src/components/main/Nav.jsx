@@ -9,7 +9,7 @@ export default function Nav() {
     const navigate = useNavigate();
     const location = useLocation();
     const user = useSelector((state) => state.auth.user);
-    const role = user.rol;
+    const role = user?.rol;
     const { t } = useTranslation();
 
     const navItems = {
@@ -26,10 +26,14 @@ export default function Nav() {
             { id: 'empleados', path: '/admin/empleados', icon: Users, label: t('nav.empleados') },
             { id: 'menu', path: '/admin/menu', icon: ClipboardList, label: t('nav.menu') },
             { id: 'perfil', path: '/perfil', icon: User, label: t('nav.perfil') },
+        ],
+        superadmin: [
+            { id: 'superadmin', path: '/superadmin', icon: Users, label: t('nav.superadmin') || 'SuperAdmin' },
+            { id: 'perfil', path: '/perfil', icon: User, label: t('nav.perfil') },
         ]
     };
 
-    const currentItems = navItems[role];
+    const currentItems = navItems[role] || [];
 
     return (
         <>
@@ -80,3 +84,6 @@ export default function Nav() {
         </>
     );
 }
+
+
+

@@ -27,9 +27,11 @@
       "privacyPolicy": "Privacy Policy"
     },
     "errors": {
-      "loginIncorrect": "Invalid email or password.",
-      "emailExists": "This email is already registered.",
+      "loginIncorrect": "The password you entered is incorrect.",
+      "userNotFound": "This email address is not registered.",
+      "emailExists": "This email address is already registered.",
       "passwordsMismatch": "Passwords do not match.",
+      "passwordShort": "Password must be at least 6 characters long.",
       "unexpected": "An unexpected error occurred."
     },
     "legal": {
@@ -47,7 +49,8 @@
     "perfil": "Profile",
     "scanner": "Scanner",
     "empleados": "Staff",
-    "menu": "Menu"
+    "menu": "Menu",
+    "superadmin": "Super Panel"
   },
   "error": {
     "title": "404",
@@ -79,6 +82,7 @@
     "roleUser": "User",
     "roleAdmin": "Administrator",
     "roleStaff": "Staff",
+    "roleSuper": "Super Admin",
     "balance": "Available Balance",
     "language": "Language"
   },
@@ -161,6 +165,28 @@
       "bulkFormatError": "Invalid CSV format. Please use the template."
     }
   },
+  "scanner": {
+    "title": "SCANNER",
+    "subtitle": "Order Validation",
+    "startBtn": "Start Camera",
+    "cancelBtn": "Cancel",
+    "searching": "Searching order...",
+    "alreadyValidated": "ALREADY VALIDATED",
+    "userLabel": "User",
+    "localLabel": "Venue",
+    "confirmBtn": "CONFIRM DELIVERY",
+    "scanAnother": "SCAN ANOTHER",
+    "successTitle": "SERVED!",
+    "successMsg": "The drink has been successfully validated.",
+    "scanNext": "SCAN NEXT",
+    "errorTitle": "ERROR",
+    "retryBtn": "RETRY",
+    "insecureWarning": "Camera requires HTTPS to work on mobile. Use from a PC or enable a secure connection.",
+    "orLabel": "OR",
+    "uploadBtn": "Choose Photo from Gallery",
+    "cameraError": "Error accessing camera",
+    "noCodeFound": "No QR code detected in the image"
+  },
   "user": {
     "lugares": {
       "title": "Explore Venues",
@@ -195,7 +221,45 @@
       "statusEntregado": "Delivered",
       "statusPendiente": "Available",
       "mixerLabel": "Mixed with:",
-      "descriptionLabel": "Description"
+      "descriptionLabel": "Description",
+      "errorNotFound": "Order not found."
     }
+  },
+  "superadmin": {
+    "title": "SUPER DASHBOARD",
+    "localesTab": "Venues",
+    "adminsTab": "Administrators",
+    "exitBtn": "Exit Panel",
+    "localesTitle": "Venue Management",
+    "adminsTitle": "Admin Management",
+    "subtitle": "Manage global platform resources",
+    "newLocal": "NEW VENUE",
+    "newAdmin": "NEW ADMINISTRATOR",
+    "adminsCount": "{{count}} Admins assigned",
+    "editLocal": "Edit Venue",
+    "editAdmin": "Edit Administrator",
+    "localName": "Venue Name",
+    "city": "City",
+    "street": "Street / Address",
+    "localPhoto": "Venue Photo",
+    "selectImage": "Select image",
+    "createLocalBtn": "CREATE VENUE",
+    "saveChanges": "SAVE CHANGES",
+    "adminName": "Full Name",
+    "adminEmail": "Access Email",
+    "adminPass": "Initial Password",
+    "adminPassEdit": "New Password (Optional)",
+    "assignLocal": "Assign to Venue",
+    "selectLocal": "Select venue...",
+    "createAdminBtn": "CREATE ADMINISTRATOR",
+    "updateAdminBtn": "UPDATE ADMIN",
+    "tableAdmin": "Administrator",
+    "tableContact": "Contact",
+    "tableLocal": "Assigned Venue",
+    "tableActions": "Actions",
+    "successLocalCreated": "Venue created successfully",
+    "successLocalUpdated": "Venue updated successfully",
+    "successAdminCreated": "Administrator created successfully",
+    "successAdminUpdated": "Administrator updated successfully"
   }
 }

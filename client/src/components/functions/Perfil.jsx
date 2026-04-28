@@ -169,7 +169,7 @@ export default function Perfil() {
                     <div className="flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full mb-8 shadow-[inset_0_0_10px_rgba(16,185,129,0.1)]">
                         <Shield size={14} className="text-emerald-400" />
                         <span className="text-xs font-bold text-emerald-400 tracking-widest uppercase">
-                            {user?.rol === 'user' ? t('perfil.roleUser') || 'Usuario' : user?.rol === 'admin' ? t('perfil.roleAdmin') || 'Admin' : t('perfil.roleStaff') || 'Staff'}
+                            {user?.rol === 'user' ? t('perfil.roleUser') : user?.rol === 'admin' ? t('perfil.roleAdmin') : user?.rol === 'superadmin' ? t('perfil.roleSuper') : t('perfil.roleStaff')}
                         </span>
                     </div>
 
@@ -406,3 +406,6 @@ export default function Perfil() {
         </div>
     );
 }
+
+
+

@@ -48,6 +48,31 @@ router.post('/', verificarRol('user'), async (req, res) => {
     }
 });
 
+router.get('/by-qr/:qr_code', verificarRol('staff'), async (req, res) => {
+    try {
+        const pedido = await Pedido.findOne({
+            where: { qr_code: req.params.qr_code },
+            include: [
+                {
+                    model: Producto,
+                    as: 'producto',
+                    include: [{ model: Traduccion_producto, as: 'Traduccion_productos' }]
+                },
+                { model: Local, as: 'local' },
+                { model: Usuario, as: 'usuario', attributes: ['nombre', 'email'] }
+            ]
+        });
+
+        if (!pedido) {
+            return res.status(404).json({ error: 'user.bebidas.errorNotFound' });
+        }
+
+        res.status(200).json(pedido);
+    } catch (err) {
+        res.status(500).json({ error: 'Error fetching order by QR', details: err.message });
+    }
+});
+
 router.get('/my-orders', verificarRol('user'), async (req, res) => {
    try {
     const pedidos = await Pedido.findAll({
@@ -72,7 +97,7 @@ router.put('/:id/validate', verificarRol('staff'), async (req, res) => {
     try {
         const pedido = await Pedido.findByPk(req.params.id);
         if (!pedido) {
-            return res.status(404).json({ error: 'Order not found' });
+            return res.status(404).json({ error: 'user.bebidas.errorNotFound' });
         }
         pedido.estado = 'Entregado';
         pedido.staff_id = req.usuario.id;
@@ -85,3 +110,6 @@ router.put('/:id/validate', verificarRol('staff'), async (req, res) => {
 });
 
 module.exports = router;
+
+
+

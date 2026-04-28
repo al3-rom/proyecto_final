@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./auth/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +17,13 @@ export default function Home() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.auth.user);
-    const role = user.rol;
+    const role = user?.rol;
+
+    useEffect(() => {
+        if (role === 'superadmin' && window.location.pathname === '/') {
+            navigate('/superadmin');
+        }
+    }, [role, navigate]);
 
     return (
         <div className="dark relative min-h-screen bg-[#050505] font-sans text-white">
@@ -63,3 +70,6 @@ export default function Home() {
         </div>
     );
 }
+
+
+

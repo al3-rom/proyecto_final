@@ -27,9 +27,11 @@
       "privacyPolicy": "Política de Privacidad y Uso de Datos"
     },
     "errors": {
-      "loginIncorrect": "El correo o la contraseña son incorrectos.",
+      "loginIncorrect": "La contraseña es incorrecta.",
+      "userNotFound": "Este correo electrónico no está registrado.",
       "emailExists": "Este correo electrónico ya está registrado.",
       "passwordsMismatch": "Las contraseñas no coinciden.",
+      "passwordShort": "La contraseña debe tener al menos 6 caracteres.",
       "unexpected": "Ha ocurrido un error inesperado."
     },
     "legal": {
@@ -47,7 +49,8 @@
     "perfil": "Perfil",
     "scanner": "Escáner",
     "empleados": "Empleados",
-    "menu": "Menú"
+    "menu": "Menú",
+    "superadmin": "Panel Super"
   },
   "error": {
     "title": "404",
@@ -78,6 +81,7 @@
     "roleUser": "Usuario",
     "roleAdmin": "Administrador",
     "roleStaff": "Staff",
+    "roleSuper": "Super Administrador",
     "balance": "Saldo Disponible",
     "language": "Idioma"
   },
@@ -160,6 +164,28 @@
       "bulkFormatError": "Formato de CSV incorrecto. Usa la plantilla."
     }
   },
+  "scanner": {
+    "title": "ESCÁNER",
+    "subtitle": "Validación de consumiciones",
+    "startBtn": "Iniciar Cámara",
+    "cancelBtn": "Cancelar",
+    "searching": "Buscando pedido...",
+    "alreadyValidated": "YA VALIDADO",
+    "userLabel": "Usuario",
+    "localLabel": "Local",
+    "confirmBtn": "CONFIRMAR ENTREGA",
+    "scanAnother": "ESCANEAR OTRO",
+    "successTitle": "¡SERVIDO!",
+    "successMsg": "La consumición ha sido validada correctamente.",
+    "scanNext": "ESCANEAR SIGUIENTE",
+    "errorTitle": "ERROR",
+    "retryBtn": "REINTENTAR",
+    "insecureWarning": "La cámara requiere HTTPS para funcionar en móviles. Usa el PC o activa una conexión segura.",
+    "orLabel": "O",
+    "uploadBtn": "Elegir Foto del Carrete",
+    "cameraError": "Error al acceder a la cámara",
+    "noCodeFound": "No se detectó ningún QR en la imagen"
+  },
   "user": {
     "lugares": {
       "title": "Explora Lugares",
@@ -194,7 +220,45 @@
       "statusEntregado": "Entregado",
       "statusPendiente": "Disponible",
       "mixerLabel": "Mezclado con:",
-      "descriptionLabel": "Descripción"
+      "descriptionLabel": "Descripción",
+      "errorNotFound": "Pedido no encontrado."
     }
+  },
+  "superadmin": {
+    "title": "SUPER DASHBOARD",
+    "localesTab": "Locales",
+    "adminsTab": "Administradores",
+    "exitBtn": "Salir del Panel",
+    "localesTitle": "Gestión de Locales",
+    "adminsTitle": "Gestión de Admins",
+    "subtitle": "Administra los recursos globales de la plataforma",
+    "newLocal": "NUEVO LOCAL",
+    "newAdmin": "NUEVO ADMINISTRADOR",
+    "adminsCount": "{{count}} Admins asignados",
+    "editLocal": "Editar Local",
+    "editAdmin": "Editar Administrador",
+    "localName": "Nombre del Local",
+    "city": "Ciudad",
+    "street": "Calle / Dirección",
+    "localPhoto": "Foto del Local",
+    "selectImage": "Seleccionar imagen",
+    "createLocalBtn": "CREAR LOCAL",
+    "saveChanges": "GUARDAR CAMBIOS",
+    "adminName": "Nombre Completo",
+    "adminEmail": "Email de Acceso",
+    "adminPass": "Contraseña Inicial",
+    "adminPassEdit": "Nueva Contraseña (Opcional)",
+    "assignLocal": "Asignar a Local",
+    "selectLocal": "Seleccionar local...",
+    "createAdminBtn": "CREAR ADMINISTRADOR",
+    "updateAdminBtn": "ACTUALIZAR ADMIN",
+    "tableAdmin": "Administrador",
+    "tableContact": "Contacto",
+    "tableLocal": "Local Asignado",
+    "tableActions": "Acciones",
+    "successLocalCreated": "Local creado con éxito",
+    "successLocalUpdated": "Local actualizado con éxito",
+    "successAdminCreated": "Administrador creado con éxito",
+    "successAdminUpdated": "Administrador actualizado con éxito"
   }
 }

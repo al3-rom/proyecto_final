@@ -92,7 +92,7 @@ router.delete('/all', verificarRol('admin'), async (req, res) => {
     try {
         const { local_id } = req.query;
         if (!local_id) return res.status(400).json({ error: 'Local ID required' });
-        // Security check: Admin can only delete from their own local
+        
         let userLocalId = req.user.local_id;
         if (userLocalId === undefined) {
             const u = await require('../models/Usuario').findByPk(req.user.id);
@@ -175,3 +175,6 @@ router.post('/bulk', verificarRol('admin'), async (req, res) => {
 });
 
 module.exports = router;
+
+
+

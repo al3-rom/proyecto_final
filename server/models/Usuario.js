@@ -30,7 +30,7 @@ const Usuario = sequelize.define('Usuario', {
     defaultValue: 0,
   },
   rol: {
-    type: DataTypes.ENUM('admin', 'user', 'staff'),
+    type: DataTypes.ENUM('admin', 'user', 'staff', 'superadmin'),
     defaultValue: 'user',
   },
   local_id: {
@@ -40,3 +40,7 @@ const Usuario = sequelize.define('Usuario', {
 });
 
 module.exports = Usuario;
+
+
+
+

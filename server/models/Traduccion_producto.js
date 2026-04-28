@@ -26,3 +26,7 @@ const Traduccion_producto = sequelize.define('Traduccion_producto', {
 });
 
 module.exports = Traduccion_producto;
+
+
+
+

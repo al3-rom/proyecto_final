@@ -101,3 +101,6 @@ router.delete('/all/local', verificarRol('admin'), async (req, res) => {
 });
 
 module.exports = router;
+
+
+

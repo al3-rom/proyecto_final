@@ -26,7 +26,13 @@ export const login = createAsyncThunk("auth/login", async ({credentials, remembe
         }
         return response.data;
     } catch (error) {
-        dispatch(setError(error.response?.data?.error || "Error en el login"));
+        console.error("Login Thunk Error Details:", {
+            message: error.message,
+            response: error.response?.data,
+            status: error.response?.status
+        });
+        const errorMessage = error.response?.data?.error || error.message || "auth.errors.unexpected";
+        dispatch(setError(typeof errorMessage === 'string' ? errorMessage : "auth.errors.unexpected"));
         throw error;
     }
 });
@@ -49,3 +55,6 @@ export const register = createAsyncThunk("auth/register", async (formData, { dis
     } catch (error) {
     }
 });
+
+
+

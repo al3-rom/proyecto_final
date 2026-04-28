@@ -270,7 +270,7 @@ export default function Employers() {
                 </div>
             )}
 
-            {/* Modal de Eliminación */}
+            {}
             {showDeleteModal && (
                 <div
                     onClick={handleCloseDeleteModal}
@@ -339,3 +339,6 @@ export default function Employers() {
         </div>
     );
 }
+
+
+

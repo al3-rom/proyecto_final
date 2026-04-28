@@ -26,3 +26,7 @@ const Local = sequelize.define('Local', {
 });
 
 module.exports = Local;
+
+
+
+

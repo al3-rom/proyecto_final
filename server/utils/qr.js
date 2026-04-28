@@ -6,3 +6,5 @@ const generarQr = (pedidoId) => {
 };
 
 module.exports = { generarQr };
+
+

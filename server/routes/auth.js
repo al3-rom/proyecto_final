@@ -11,7 +11,7 @@ router.post('/register', upload.single('foto_perfil'), async (req, res) => {
         const { email, password, nombre } = req.body;
         
         if (!password || password.length < 6) {
-            return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+            return res.status(400).json({ error: 'auth.errors.passwordShort' });
         }
         
         let foto_perfil_url = null;
@@ -50,12 +50,16 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        if (!email || !password) {
+            return res.status(400).json({ error: 'auth.errors.loginIncorrect' });
+        }
+
         const usuario = await Usuario.findOne({ where: { email } });
 
         if (!usuario) {
-            return res.status(404).json({ error: 'auth.errors.loginIncorrect' });
+            return res.status(401).json({ error: 'auth.errors.userNotFound' });
         }
-
+        
         const passwordValido = await bcrypt.compare(password, usuario.password);
         if (!passwordValido) {
             return res.status(401).json({ error: 'auth.errors.loginIncorrect' });
@@ -69,9 +73,13 @@ router.post('/login', async (req, res) => {
 
         res.json({ usuario: { id: usuario.id, email: usuario.email, rol: usuario.rol, saldo: usuario.saldo, nombre: usuario.nombre, local_id: usuario.local_id }, token });
     } catch (err) {
-        res.status(500).json({ error: 'auth.errors.unexpected', details: err.message });
+        console.error("Login error:", err);
+        res.status(500).json({ error: 'auth.errors.unexpected', details: err.message, raw: err.toString() });
     }
 });
 
 
 module.exports = router;
+
+
+

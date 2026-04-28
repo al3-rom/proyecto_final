@@ -54,3 +54,7 @@ export default function LegalModal({ isOpen, onClose }) {
         </div>
     );
 }
+
+
+
+
