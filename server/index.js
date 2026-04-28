@@ -3,6 +3,13 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 const sequelize = require('./config/database');
+const fs = require('fs');
+
+// Asegurar que la carpeta de subidas existe
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 
 const Usuario = require('./models/Usuario');
