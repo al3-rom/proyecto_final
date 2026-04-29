@@ -38,6 +38,10 @@ export default function LegalModal({ isOpen, onClose }) {
                                 <span className="text-emerald-500 mr-3 mt-1.5 text-xl leading-none">✦</span>
                                 <span>{t('auth.legal.li3')}</span>
                             </li>
+                            <li className="flex items-start">
+                                <span className="text-emerald-500 mr-3 mt-1.5 text-xl leading-none">✦</span>
+                                <span>{t('auth.legal.li4')}</span>
+                            </li>
                         </ul>
                     </div>
                 </div>

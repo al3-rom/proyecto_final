@@ -22,19 +22,27 @@ const Pedido = sequelize.define('Pedido', {
     },
     local_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     staff_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
     },
     estado: {
-        type: DataTypes.ENUM('Pendiente', 'Entregado'),
+        type: DataTypes.ENUM('Pendiente', 'Entregado', 'En Guardarropa', 'Recogido', 'Reembolsado'),
         defaultValue: 'Pendiente',
     },
     validated_at: {
         type: DataTypes.DATE,
         allowNull: true
+    },
+    propina: {
+        type: DataTypes.DECIMAL(10, 2),
+        defaultValue: 0,
+    },
+    precio_pagado: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
     },
 });
 

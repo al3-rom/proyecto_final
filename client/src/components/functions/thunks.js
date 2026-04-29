@@ -114,6 +114,17 @@ export const recargarSaldoThunk = createAsyncThunk(
     }
 );
 
-
-
-
+export const fetchTipHistory = createAsyncThunk(
+    "functions/fetchTipHistory",
+    async (_, { getState }) => {
+        try {
+            const token = getState().auth.token;
+            const response = await axios.get(`${API_URL}/orders/tip-history`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);

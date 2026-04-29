@@ -6,10 +6,16 @@ const Traduccion_producto = require('../models/Traduccion_producto');
 const upload = require('../middleware/upload');
 const sequelize = require('../config/database');
 
-
 router.get('/', async (req, res) => {
     try {
+        const { local_id } = req.query;
+        const where = {};
+        if (local_id) {
+            where.local_id = local_id;
+        }
+
         const productos = await Producto.findAll({
+            where,
             include: [{ model: Traduccion_producto, as: 'Traduccion_productos' }]
         });
         res.json(productos);
@@ -18,15 +24,48 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/catalog', async (req, res) => {
+    try {
+        const productos = await Producto.findAll({
+            include: [{ 
+                model: Traduccion_producto, 
+                as: 'Traduccion_productos',
+                attributes: ['nombre', 'descripcion', 'codigo_idioma']
+            }],
+            attributes: ['id', 'precio', 'tipo', 'foto_url']
+        });
+
+        const catalog = [];
+        const seen = new Set();
+
+        for (const p of productos) {
+            const esTrans = p.Traduccion_productos.find(t => t.codigo_idioma === 'es');
+            const key = esTrans ? esTrans.nombre.toLowerCase().trim() : null;
+            
+            if (key && !seen.has(key)) {
+                seen.add(key);
+                catalog.push(p);
+            }
+        }
+
+        res.json(catalog);
+    } catch (err) {
+        res.status(500).json({ error: 'Error fetching catalog', details: err.message });
+    }
+});
 
 router.use(verificarToken);
 
 router.post('/', verificarRol('admin'), upload.single('foto'), async (req, res) => {
     try {
-        const { local_id, precio, traducciones } = req.body;
-        const foto_url = req.file ? `/uploads/${req.file.filename}` : null;
+        const { local_id, precio, traducciones, tipo, foto_url: body_foto_url } = req.body;
+        
+        if (req.user.rol !== 'superadmin' && parseInt(req.user.local_id) !== parseInt(local_id)) {
+            return res.status(403).json({ error: 'You can only create products for your own venue' });
+        }
 
-        const producto = await Producto.create({ precio: precio || 0, foto_url, local_id });
+        const foto_url = req.file ? `/uploads/${req.file.filename}` : body_foto_url;
+        const producto = await Producto.create({ precio: precio || 0, foto_url, local_id, tipo: tipo || 'bebida' });
 
         const traduccionesArr = JSON.parse(traducciones);
         for (const t of traduccionesArr) {
@@ -47,15 +86,19 @@ router.post('/', verificarRol('admin'), upload.single('foto'), async (req, res) 
     }
 });
 
-
 router.put('/:id', verificarRol('admin'), upload.single('foto'), async (req, res) => {
     try {
-        const { precio, traducciones } = req.body;
+        const { precio, traducciones, tipo } = req.body;
         const producto = await Producto.findByPk(req.params.id);
         if (!producto) return res.status(404).json({ error: 'Product not found' });
 
+        if (req.user.rol !== 'superadmin' && parseInt(req.user.local_id) !== parseInt(producto.local_id)) {
+            return res.status(403).json({ error: 'You can only update products from your own venue' });
+        }
+
         const updateData = {};
         if (precio !== undefined) updateData.precio = precio;
+        if (tipo !== undefined) updateData.tipo = tipo;
         if (req.file) updateData.foto_url = `/uploads/${req.file.filename}`;
 
         await producto.update(updateData);
@@ -87,8 +130,6 @@ router.put('/:id', verificarRol('admin'), upload.single('foto'), async (req, res
         res.status(500).json({ error: 'Error updating product', details: err.message });
     }
 });
-
-
 
 router.delete('/all', verificarRol('admin'), async (req, res) => {
     try {
@@ -128,6 +169,11 @@ router.delete('/:id', verificarRol('admin'), async (req, res) => {
     try {
         const producto = await Producto.findByPk(req.params.id);
         if (!producto) return res.status(404).json({ error: 'Product not found' });
+
+        if (req.user.rol !== 'superadmin' && parseInt(req.user.local_id) !== parseInt(producto.local_id)) {
+            return res.status(403).json({ error: 'You can only delete products from your own venue' });
+        }
+
         await Traduccion_producto.destroy({ where: { producto_id: producto.id } });
         await producto.destroy();
         res.json({ message: 'Product deleted' });
@@ -136,13 +182,16 @@ router.delete('/:id', verificarRol('admin'), async (req, res) => {
     }
 });
 
-
 router.post('/bulk', verificarRol('admin'), async (req, res) => {
     const t = await sequelize.transaction();
     try {
         const { products, local_id } = req.body;
         if (!products || !Array.isArray(products)) {
             return res.status(400).json({ error: 'Invalid products array' });
+        }
+
+        if (req.user.rol !== 'superadmin' && parseInt(req.user.local_id) !== parseInt(local_id)) {
+            return res.status(403).json({ error: 'You can only import products for your own venue' });
         }
 
         for (const pData of products) {
@@ -177,6 +226,3 @@ router.post('/bulk', verificarRol('admin'), async (req, res) => {
 });
 
 module.exports = router;
-
-
-

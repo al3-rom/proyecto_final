@@ -1,11 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchStaff, createStaff, updateStaff, deleteStaff, fetchProducts, createProduct, updateProduct, deleteProduct } from "./thunks";
+import { 
+    fetchStaff, createStaff, updateStaff, deleteStaff, 
+    fetchProducts, createProduct, updateProduct, deleteProduct, 
+    fetchEcoStats, fetchCatalog,
+    fetchPromocionesAdmin, createPromocion, updatePromocion, deletePromocion
+} from "./thunks";
 
 const initialState = {
     staff: [],
     products: [],
+    catalog: [],
+    promociones: [],
     status: "idle",
     productsStatus: "idle",
+    catalogStatus: "idle",
+    promosStatus: "idle",
+    ecoStats: null,
     error: null,
 };
 
@@ -40,13 +50,27 @@ export const adminSlice = createSlice({
             })
             .addCase(deleteProduct.fulfilled, (state, action) => {
                 state.products = state.products.filter((p) => p.id !== action.payload);
+            })
+            .addCase(fetchEcoStats.fulfilled, (state, action) => {
+                state.ecoStats = action.payload;
+            })
+            .addCase(fetchCatalog.pending, (state) => { state.catalogStatus = "loading"; })
+            .addCase(fetchCatalog.fulfilled, (state, action) => { state.catalogStatus = "succeeded"; state.catalog = action.payload; })
+            .addCase(fetchCatalog.rejected, (state, action) => { state.catalogStatus = "failed"; })
+            .addCase(fetchPromocionesAdmin.pending, (state) => { state.promosStatus = "loading"; })
+            .addCase(fetchPromocionesAdmin.fulfilled, (state, action) => { state.promosStatus = "succeeded"; state.promociones = action.payload; })
+            .addCase(createPromocion.fulfilled, (state, action) => { state.promociones.push(action.payload); })
+            .addCase(updatePromocion.fulfilled, (state, action) => {
+                const index = state.promociones.findIndex(p => p.id === action.payload.id);
+                if (index !== -1) {
+                    state.promociones[index] = action.payload;
+                }
+            })
+            .addCase(deletePromocion.fulfilled, (state, action) => {
+                state.promociones = state.promociones.filter(p => p.id !== action.payload);
             });
     },
 });
 
 export const { clearAdminState } = adminSlice.actions;
 export default adminSlice.reducer;
-
-
-
-

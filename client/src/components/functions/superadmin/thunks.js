@@ -90,6 +90,18 @@ export const updateAdmin = createAsyncThunk(
     }
 );
 
+export const deleteLocal = createAsyncThunk(
+    "superadmin/deleteLocal",
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await axios.delete(`${API_URL}/superadmin/locales/${id}`, getAuthHeader());
+            return { id, ...response.data };
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.error || "Error al eliminar local");
+        }
+    }
+);
+
 
 
 

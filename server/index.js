@@ -5,20 +5,18 @@ require('dotenv').config();
 const sequelize = require('./config/database');
 const fs = require('fs');
 
-// Asegurar que la carpeta de subidas existe
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
-
 
 const Usuario = require('./models/Usuario');
 const Producto = require('./models/Producto');
 const Pedido = require('./models/Pedido');
 const Local = require('./models/Local');
 const Traduccion_producto = require('./models/Traduccion_producto');
-
-
+const Promocion = require('./models/Promocion');
+const UsoPromocion = require('./models/UsoPromocion');
 
 Local.hasMany(Usuario, { as: 'usuarios', foreignKey: 'local_id' });
 Usuario.belongsTo(Local, { as: 'local', foreignKey: 'local_id' });
@@ -38,6 +36,18 @@ Pedido.belongsTo(Producto, { as: 'producto', foreignKey: 'producto_id' });
 Local.hasMany(Pedido, { as: 'pedidos', foreignKey: 'local_id' });
 Pedido.belongsTo(Local, { as: 'local', foreignKey: 'local_id' });
 
+Local.hasMany(Promocion, { as: 'promociones', foreignKey: 'local_id' });
+Promocion.belongsTo(Local, { as: 'local', foreignKey: 'local_id' });
+
+Producto.hasMany(Promocion, { as: 'promociones', foreignKey: 'producto_id' });
+Promocion.belongsTo(Producto, { as: 'producto', foreignKey: 'producto_id' });
+
+Usuario.hasMany(UsoPromocion, { as: 'usos_promociones', foreignKey: 'usuario_id' });
+UsoPromocion.belongsTo(Usuario, { as: 'usuario', foreignKey: 'usuario_id' });
+
+Promocion.hasMany(UsoPromocion, { as: 'usos', foreignKey: 'promocion_id' });
+UsoPromocion.belongsTo(Promocion, { as: 'promocion', foreignKey: 'promocion_id' });
+
 Pedido.belongsTo(Usuario, { as: 'staff', foreignKey: 'staff_id' });
 
 const app = express();
@@ -56,24 +66,18 @@ const ordersRoutes = require('./routes/orders');
 const staffRoutes = require('./routes/staff');
 const saldoRoutes = require('./routes/saldo');
 const usuarioRoutes = require('./routes/usuario');
-
 const superadminRoutes = require('./routes/superadmin');
+const promocionesRoutes = require('./routes/promociones');
 
 app.use('/api/auth', authRoutes);
-
 app.use('/api/locales', verificarToken, localesRoutes);
-
 app.use('/api/productos', verificarToken, productosRoutes);
-
 app.use('/api/orders', verificarToken, ordersRoutes);
-
 app.use('/api/staff', verificarToken, staffRoutes);
-
 app.use('/api/saldo', verificarToken, saldoRoutes);
-
 app.use('/api/usuario', verificarToken, usuarioRoutes);
-
 app.use('/api/superadmin', superadminRoutes);
+app.use('/api/promociones', promocionesRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'EcoNight Pass API' });
@@ -85,7 +89,3 @@ sequelize.sync().then(() => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 });
-
-
-
-

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchLocales, fetchProductosByLocal, buyProducto, fetchMyOrders } from "./thunks";
+import { fetchLocales, fetchProductosByLocal, buyProducto, fetchMyOrders, addTip, fetchPromociones, transferOrder, claimPromocion, sellBackOrders } from "./thunks";
 
 const userSlice = createSlice({
     name: "user",
@@ -8,6 +8,7 @@ const userSlice = createSlice({
         localesStatus: "idle",
         selectedLocal: null,
         selectedLocalProducts: [],
+        promociones: [],
         productsStatus: "idle",
         buyStatus: "idle",
         orders: [],
@@ -21,6 +22,7 @@ const userSlice = createSlice({
         clearSelectedLocal: (state) => {
             state.selectedLocal = null;
             state.selectedLocalProducts = [];
+            state.promociones = [];
         },
     },
     extraReducers: (builder) => {
@@ -67,13 +69,29 @@ const userSlice = createSlice({
             .addCase(fetchMyOrders.rejected, (state, action) => {
                 state.ordersStatus = "failed";
                 state.error = action.payload || action.error.message;
+            })
+            .addCase(addTip.fulfilled, (state, action) => {
+                const index = state.orders.findIndex(o => o.id === action.payload.id);
+                if (index !== -1) {
+                    state.orders[index].propina = action.payload.propina;
+                }
+            })
+            .addCase(fetchPromociones.fulfilled, (state, action) => {
+                state.promociones = action.payload;
+            })
+            .addCase(transferOrder.fulfilled, (state, action) => {
+                state.orders = state.orders.filter(o => o.id !== action.meta.arg.orderId);
+            })
+            .addCase(claimPromocion.fulfilled, (state, action) => {
+                if (action.payload.pedido) {
+                    state.orders.unshift(action.payload.pedido);
+                }
+            })
+            .addCase(sellBackOrders.fulfilled, (state) => {
+                state.ordersStatus = "idle";
             });
     },
 });
 
 export const { setSelectedLocal, clearSelectedLocal } = userSlice.actions;
 export default userSlice.reducer;
-
-
-
-

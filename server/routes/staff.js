@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { verificarToken, verificarRol } = require('../middleware/auth');
+const Usuario = require('../models/Usuario');
 
 router.use(verificarToken);
-const Usuario = require('../models/Usuario');
 
 router.post('/register', verificarRol('admin'), async (req, res) => {
     try {
@@ -17,6 +17,10 @@ router.post('/register', verificarRol('admin'), async (req, res) => {
         const existe = await Usuario.findOne({ where: { email } });
         if (existe) {
             return res.status(400).json({ error: 'Email already registered' });
+        }
+
+        if (req.user.rol !== 'superadmin' && parseInt(req.user.local_id) !== parseInt(local_id)) {
+            return res.status(403).json({ error: 'You can only register staff for your own venue' });
         }
 
         let foto_perfil_url = null;
@@ -38,11 +42,20 @@ router.post('/register', verificarRol('admin'), async (req, res) => {
     }
 });
 
-router.get('/', verificarRol('admin'), async (req, res) => {
+router.get('/', verificarRol('admin', 'superadmin'), async (req, res) => {
     try {
-        const staff = await Usuario.findAll({
-            where: { rol: 'staff' }
-        });
+        const where = { rol: 'staff' };
+        
+        if (req.user.rol === 'admin') {
+            let local_id = req.user.local_id;
+            if (local_id === undefined || local_id === null) {
+                const u = await Usuario.findByPk(req.user.id);
+                local_id = u?.local_id;
+            }
+            where.local_id = local_id;
+        }
+
+        const staff = await Usuario.findAll({ where });
         res.status(200).json(staff);
     } catch (err) {
         res.status(500).json({ error: 'Error fetching staff', details: err.message });
@@ -50,12 +63,16 @@ router.get('/', verificarRol('admin'), async (req, res) => {
 });
 
 router.put('/:id', verificarRol('admin'), async (req, res) => {
-
     try {
         const staff = await Usuario.findByPk(req.params.id);
-        if (!staff) {
+        if (!staff || staff.rol !== 'staff') {
             return res.status(404).json({ error: 'Staff not found' });
         }
+
+        if (req.user.rol !== 'superadmin' && parseInt(req.user.local_id) !== parseInt(staff.local_id)) {
+            return res.status(403).json({ error: 'You can only update staff from your own venue' });
+        }
+
         staff.set(req.body);
         await staff.save();
         res.json(staff);
@@ -67,9 +84,14 @@ router.put('/:id', verificarRol('admin'), async (req, res) => {
 router.delete('/:id', verificarRol('admin'), async (req, res) => {
     try {
         const staff = await Usuario.findByPk(req.params.id);
-        if (!staff) {
+        if (!staff || staff.rol !== 'staff') {
             return res.status(404).json({ error: 'Staff not found' });
         }
+
+        if (req.user.rol !== 'superadmin' && parseInt(req.user.local_id) !== parseInt(staff.local_id)) {
+            return res.status(403).json({ error: 'You can only delete staff from your own venue' });
+        }
+
         await staff.destroy();
         res.json({ message: 'Staff deleted' });
     } catch (err) {
@@ -103,6 +125,3 @@ router.delete('/all/local', verificarRol('admin'), async (req, res) => {
 });
 
 module.exports = router;
-
-
-

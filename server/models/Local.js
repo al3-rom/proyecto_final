@@ -11,22 +11,22 @@ const Local = sequelize.define('Local', {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
-  ciudad: {
-    type: DataTypes.STRING(50),
-    allowNull: false,
+  ciudad: { 
+    type: DataTypes.STRING, 
+    allowNull: false 
   },
-  calle: {
-    type: DataTypes.STRING(100),
-    allowNull: false,
+  direccion: { 
+    type: DataTypes.STRING, 
+    allowNull: false 
   },
-  foto_url: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
+  foto: { 
+    type: DataTypes.STRING, 
+    allowNull: true 
   },
+  tipo: { 
+    type: DataTypes.ENUM('normal', 'festival'), 
+    defaultValue: 'normal' 
+  }
 });
 
 module.exports = Local;
-
-
-
-

@@ -10,6 +10,8 @@ import Perfil from "./functions/Perfil";
 import Error from "./functions/Error";
 import MenuBebidas from "./functions/admin/MenuBebidas";
 import Employers from "./functions/admin/Employers";
+import EcoDashboard from "./functions/admin/EcoDashboard";
+import PromocionesAdmin from "./functions/admin/PromocionesAdmin";
 import ScanerQR from "./functions/staff/ScanerQR";
 
 
@@ -22,6 +24,9 @@ export default function Home() {
     useEffect(() => {
         if (role === 'superadmin' && window.location.pathname === '/') {
             navigate('/superadmin');
+        }
+        if (role === 'staff' && window.location.pathname === '/') {
+            navigate('/scan');
         }
     }, [role, navigate]);
 
@@ -55,6 +60,8 @@ export default function Home() {
                                 <Route path="/" element={<Employers />} />
                                 <Route path="/admin/empleados" element={<Employers />} />
                                 <Route path="/admin/menu" element={<MenuBebidas />} />
+                                <Route path="/admin/eco" element={<EcoDashboard />} />
+                                <Route path="/admin/promociones" element={<PromocionesAdmin />} />
                             </>
                         )}
                         {role === 'staff' && (

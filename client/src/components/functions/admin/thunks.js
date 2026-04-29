@@ -5,10 +5,11 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchStaff = createAsyncThunk(
     "admin/fetchStaff",
-    async (_, { getState, rejectWithValue }) => {
+    async (localId, { getState, rejectWithValue }) => {
         try {
             const token = getState().auth.token;
-            const response = await axios.get(`${API_URL}/staff`, {
+            const url = localId ? `${API_URL}/staff?local_id=${localId}` : `${API_URL}/staff`;
+            const response = await axios.get(url, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             return response.data;
@@ -65,10 +66,11 @@ export const deleteStaff = createAsyncThunk(
 
 export const fetchProducts = createAsyncThunk(
     "admin/fetchProducts",
-    async (_, { getState, rejectWithValue }) => {
+    async (localId, { getState, rejectWithValue }) => {
         try {
             const token = getState().auth.token;
-            const response = await axios.get(`${API_URL}/productos`, {
+            const url = localId ? `${API_URL}/productos?local_id=${localId}` : `${API_URL}/productos`;
+            const response = await axios.get(url, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             return response.data;
@@ -157,6 +159,80 @@ export const deleteAllStaff = createAsyncThunk("admin/deleteAllStaff", async (lo
     }
 });
 
+export const fetchEcoStats = createAsyncThunk(
+    "admin/fetchEcoStats",
+    async (localId, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().auth.token;
+            const response = await axios.get(`${API_URL}/locales/${localId}/stats`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.error || "Error fetching eco stats");
+        }
+    }
+);
 
+export const fetchCatalog = createAsyncThunk(
+    "admin/fetchCatalog",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().auth.token;
+            const response = await axios.get(`${API_URL}/productos/catalog`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.error || "Error fetching catalog");
+        }
+    }
+);
 
+export const fetchPromocionesAdmin = createAsyncThunk("admin/fetchPromociones", async (localId, { getState, rejectWithValue }) => {
+    try {
+        const token = getState().auth.token;
+        const response = await axios.get(`${API_URL}/promociones/local/${localId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(err.response?.data?.error || "Error fetching promotions");
+    }
+});
 
+export const createPromocion = createAsyncThunk("admin/createPromocion", async (formData, { getState, rejectWithValue }) => {
+    try {
+        const token = getState().auth.token;
+        const response = await axios.post(`${API_URL}/promociones`, formData, {
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
+        });
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(err.response?.data?.error || "Error creating promotion");
+    }
+});
+
+export const updatePromocion = createAsyncThunk("admin/updatePromocion", async ({ id, formData }, { getState, rejectWithValue }) => {
+    try {
+        const token = getState().auth.token;
+        const response = await axios.put(`${API_URL}/promociones/${id}`, formData, {
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
+        });
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(err.response?.data?.error || "Error updating promotion");
+    }
+});
+
+export const deletePromocion = createAsyncThunk("admin/deletePromocion", async (id, { getState, rejectWithValue }) => {
+    try {
+        const token = getState().auth.token;
+        await axios.delete(`${API_URL}/promociones/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return id;
+    } catch (err) {
+        return rejectWithValue(err.response?.data?.error || "Error deleting promotion");
+    }
+});

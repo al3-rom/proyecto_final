@@ -9,7 +9,7 @@ const Producto = sequelize.define('Producto', {
   },
   local_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   precio: {
     type: DataTypes.DECIMAL(10, 2),
@@ -18,6 +18,11 @@ const Producto = sequelize.define('Producto', {
   foto_url: {
     type: DataTypes.STRING(255),
     allowNull: true,
+  },
+  tipo: {
+    type: DataTypes.ENUM('bebida', 'guardarropa'),
+    defaultValue: 'bebida',
+    allowNull: false
   }
 });
 
