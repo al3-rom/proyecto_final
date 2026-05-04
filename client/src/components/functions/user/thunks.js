@@ -37,7 +37,7 @@ export const buyProducto = createAsyncThunk("user/buyProducto", async ({ product
     }
 });
 
-export const fetchMyOrders = createAsyncThunk("user/fetchMyOrders", async (_, { getState, rejectWithValue }) => {
+export const fetchMyOrders = createAsyncThunk("user/fetchMyOrders", async (_, { getState, dispatch, rejectWithValue }) => {
     try {
         const token = getState().auth.token;
         const response = await axios.get(`${API_URL}/orders/my-orders`, {

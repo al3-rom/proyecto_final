@@ -88,8 +88,7 @@ router.get('/my-orders', verificarRol('user'), async (req, res) => {
    try {
     const pedidos = await Pedido.findAll({
         where: { 
-            usuario_id: req.usuario.id,
-            local_id: { [Op.ne]: null }
+            usuario_id: req.usuario.id
         },
         include: [
             {
