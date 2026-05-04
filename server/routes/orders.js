@@ -44,8 +44,19 @@ router.post('/', verificarRol('user'), async (req, res) => {
             usuario.saldo = Number(usuario.saldo) - Number(producto.precio);
             await usuario.save({ transaction: t });
 
+            const pedidoCompleto = await Pedido.findByPk(pedido.id, {
+                include: [
+                    { model: Local, as: 'local' },
+                    { 
+                        model: Producto, 
+                        as: 'producto',
+                        include: [{ model: Traduccion_producto, as: 'Traduccion_productos' }]
+                    }
+                ]
+            });
+
             await t.commit();
-            res.status(201).json({ pedido, nuevoSaldo: usuario.saldo });
+            res.status(201).json({ pedido: pedidoCompleto, nuevoSaldo: usuario.saldo });
         } catch (error) {
             await t.rollback();
             throw error;
