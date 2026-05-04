@@ -190,7 +190,12 @@ router.put('/:id/validate', verificarRol('staff'), async (req, res) => {
         pedido.staff_id = req.usuario.id;
         await pedido.save({ transaction: t });
         await t.commit();
-        res.json(pedido);
+
+        const nuevoSaldoStaff = Number(pedido.propina) > 0
+            ? (await Usuario.findByPk(req.usuario.id))?.saldo
+            : undefined;
+
+        res.json({ pedido, nuevoSaldoStaff });
     } catch (err) {
         await t.rollback();
         res.status(500).json({ error: 'Error validating order', details: err.message });

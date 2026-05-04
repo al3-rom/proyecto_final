@@ -92,7 +92,9 @@
     "language": "Idioma",
     "tipHistory": "HISTORIAL DE PROPINAS",
     "noTips": "Aún no has recibido ninguna propina.",
-    "tipFrom": "Propina de"
+    "tipFrom": "Propina de",
+    "tipTotal": "TOTAL RECIBIDO",
+    "viewTipHistory": "Ver historial completo"
   },
   "admin": {
     "stats": {

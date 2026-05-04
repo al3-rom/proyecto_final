@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { User, Mail, Wallet, Shield, Settings, LogOut, Key, Trash2, X, CheckCircle2, AlertCircle, Globe, Camera, CreditCard, Banknote, Plus, Eye, EyeOff, Heart } from "lucide-react";
+import { User, Mail, Wallet, Shield, Settings, LogOut, Key, Trash2, X, CheckCircle2, AlertCircle, Globe, Camera, CreditCard, Banknote, Plus, Eye, EyeOff, Heart, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { fetchUserProfile, updateProfilePhoto, changePasswordThunk, deleteProfileThunk, recargarSaldoThunk, fetchTipHistory } from "./thunks";
+import { fetchUserProfile, updateProfilePhoto, changePasswordThunk, deleteProfileThunk, recargarSaldoThunk } from "./thunks";
 import { logout } from "../auth/authSlice";
 import LegalModal from "../auth/LegalModal";
 
@@ -24,15 +24,11 @@ export default function Perfil() {
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showLegal, setShowLegal] = useState(false);
     const [imgError, setImgError] = useState(false);
-    const [tipHistory, setTipHistory] = useState([]);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
         dispatch(fetchUserProfile());
-        if (user?.rol === 'staff') {
-            dispatch(fetchTipHistory()).unwrap().then(res => setTipHistory(res)).catch(e => console.error(e));
-        }
-    }, [dispatch, user?.rol]);
+    }, [dispatch]);
 
     useEffect(() => {
         setImgError(false);
@@ -180,36 +176,23 @@ export default function Perfil() {
 
                     {user?.rol === 'staff' && (
                         <div className="w-full mb-8 animate-in slide-in-from-bottom-4 duration-700 delay-200">
-                            <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <Heart size={14} className="text-emerald-500" /> {t('perfil.tipHistory')}
-                            </p>
-                            <div className="space-y-3 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
-                                {tipHistory.length === 0 ? (
-                                    <div className="p-8 bg-zinc-900/30 border border-dashed border-zinc-800 rounded-2xl text-center">
-                                        <Heart size={24} className="text-zinc-800 mx-auto mb-2 opacity-20" />
-                                        <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">{t('perfil.noTips')}</p>
+                            <button
+                                onClick={() => navigate('/staff/propinas')}
+                                className="w-full flex items-center justify-between p-5 bg-gradient-to-br from-emerald-500/15 to-emerald-500/5 border border-emerald-500/30 rounded-2xl hover:border-emerald-500/60 hover:from-emerald-500/20 transition-all duration-300 active:scale-[0.98] group"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400 shadow-inner group-hover:scale-110 transition-transform">
+                                        <Heart size={22} fill="currentColor" />
                                     </div>
-                                ) : (
-                                    tipHistory.map((tip) => (
-                                        <div key={tip.id} className="flex items-center gap-4 p-4 bg-zinc-900/40 border border-zinc-800/50 rounded-2xl group/tip hover:border-emerald-500/30 transition-all">
-                                            <div className="w-10 h-10 rounded-full overflow-hidden border border-zinc-800 bg-black shrink-0">
-                                                {tip.usuario?.foto_perfil_url ? (
-                                                    <img src={tip.usuario.foto_perfil_url.startsWith('http') ? tip.usuario.foto_perfil_url : `${baseUrl}${tip.usuario.foto_perfil_url.startsWith('/') ? '' : '/'}${tip.usuario.foto_perfil_url}`} alt="User" className="w-full h-full object-cover" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-zinc-600 bg-zinc-950 uppercase font-black text-[10px]">{tip.usuario?.nombre?.[0] || 'U'}</div>
-                                                )}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-[10px] font-black text-white truncate uppercase tracking-tight">{t('perfil.tipFrom')} {tip.usuario?.nombre}</p>
-                                                <p className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">{new Date(tip.validated_at).toLocaleDateString()} • {new Date(tip.validated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-sm font-black text-emerald-400">+{Number(tip.propina).toFixed(2)}€</p>
-                                            </div>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
+                                    <div className="text-left">
+                                        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-0.5">{t('perfil.tipHistory')}</p>
+                                        <p className="text-white font-black text-sm uppercase tracking-tight">{t('perfil.viewTipHistory') || 'Ver historial completo'}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <ChevronRight size={18} className="text-emerald-500 group-hover:translate-x-1 transition-transform" />
+                                </div>
+                            </button>
                         </div>
                     )}
 

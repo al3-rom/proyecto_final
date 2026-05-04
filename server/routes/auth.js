@@ -24,7 +24,7 @@ router.post('/register', upload.single('foto_perfil'), async (req, res) => {
             return res.status(400).json({ error: 'auth.errors.emailExists' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 8);
 
         const usuario = await Usuario.create({
             email,

@@ -92,7 +92,9 @@
     "language": "Language",
     "tipHistory": "TIP HISTORY",
     "noTips": "You haven't received any tips yet.",
-    "tipFrom": "Tip from"
+    "tipFrom": "Tip from",
+    "tipTotal": "TOTAL RECEIVED",
+    "viewTipHistory": "View full history"
   },
   "admin": {
     "stats": {

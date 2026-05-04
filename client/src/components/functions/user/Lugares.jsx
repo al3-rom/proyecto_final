@@ -68,8 +68,7 @@ export default function Lugares() {
             const resultAction = await dispatch(claimPromocion(promoId));
             if (claimPromocion.fulfilled.match(resultAction)) {
                 setNotification({ type: "success", text: t("user.lugares.claimSuccess") || "¡Promoción canjeada!" });
-                
-                // Update balance if returned
+
                 if (resultAction.payload.nuevoSaldo !== undefined) {
                     dispatch(updateBalance(resultAction.payload.nuevoSaldo));
                 }
@@ -88,7 +87,7 @@ export default function Lugares() {
     const filteredLocales = locales.filter((l) => {
         const matchesName = (l.nombre || "").toLowerCase().includes(searchTerm.toLowerCase());
         if (!showFilters) return matchesName;
-        
+
         return matchesName &&
             (l.ciudad || "").toLowerCase().includes(cityFilter.toLowerCase()) &&
             (l.direccion || "").toLowerCase().includes(streetFilter.toLowerCase());
@@ -104,7 +103,7 @@ export default function Lugares() {
             <div className="p-4 md:p-6 pb-24 max-w-5xl mx-auto animate-in fade-in duration-500">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div className="flex items-center gap-4">
-                        <button 
+                        <button
                             onClick={handleBack}
                             className="p-3 bg-zinc-900/50 hover:bg-zinc-800 text-white rounded-2xl transition-all border border-zinc-800 active:scale-95"
                         >
@@ -142,18 +141,18 @@ export default function Lugares() {
                         </div>
                         <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar snap-x">
                             {promociones.map((promo) => (
-                                <div 
-                                    key={promo.id} 
+                                <div
+                                    key={promo.id}
                                     onClick={() => setSelectedPromo(promo)}
                                     className="min-w-[280px] md:min-w-[320px] bg-zinc-900/40 border border-zinc-800 rounded-3xl overflow-hidden snap-start group shadow-xl cursor-pointer hover:border-amber-500/30 transition-all active:scale-[0.98]"
                                 >
                                     <div className="h-40 relative">
-                                        <img 
-                                            src={promo.foto_url ? `${BASE_URL}${promo.foto_url}` : "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop"} 
-                                            className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-110" 
-                                            alt={promo.titulo} 
+                                        <img
+                                            src={promo.foto_url ? `${BASE_URL}${promo.foto_url}` : "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop"}
+                                            className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-110"
+                                            alt={promo.titulo}
                                         />
-                                        
+
                                         {promo.descuento > 0 && (
                                             <div className="absolute top-4 right-4 bg-amber-500 text-zinc-950 px-3 py-1.5 rounded-xl font-black text-[10px] flex items-center gap-1 shadow-lg z-10 animate-pulse">
                                                 <Percent size={12} />
@@ -286,12 +285,12 @@ export default function Lugares() {
                     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setSelectedPromo(null)}>
                         <div className="bg-[#0a0a0a] border border-zinc-800 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.8)] relative animate-in zoom-in-95" onClick={(e) => e.stopPropagation()}>
                             <button onClick={() => setSelectedPromo(null)} className="absolute top-6 right-6 z-20 text-zinc-400 hover:text-white bg-black/20 backdrop-blur-md p-2 rounded-xl transition-colors"><X size={20} /></button>
-                            
+
                             <div className="aspect-video relative">
-                                <img 
-                                    src={selectedPromo.foto_url ? `${BASE_URL}${selectedPromo.foto_url}` : "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop"} 
-                                    className="w-full h-full object-cover" 
-                                    alt={selectedPromo.titulo} 
+                                <img
+                                    src={selectedPromo.foto_url ? `${BASE_URL}${selectedPromo.foto_url}` : "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop"}
+                                    className="w-full h-full object-cover"
+                                    alt={selectedPromo.titulo}
                                 />
                                 {selectedPromo.descuento > 0 && (
                                     <div className="absolute top-6 left-6 bg-amber-500 text-zinc-950 px-4 py-2 rounded-2xl font-black text-sm flex items-center gap-2 shadow-xl">
@@ -317,7 +316,7 @@ export default function Lugares() {
 
                                 <h3 className="text-3xl font-black text-white mb-4 uppercase tracking-tighter">{selectedPromo.titulo}</h3>
                                 <p className="text-zinc-400 text-sm font-bold leading-relaxed mb-8 bg-zinc-900/50 p-6 rounded-[2rem] border border-zinc-800/50">{selectedPromo.descripcion}</p>
-                                
+
                                 {selectedPromo.producto && (
                                     <div className="mb-8 p-5 bg-amber-500/5 border border-amber-500/20 rounded-2xl flex items-center justify-between">
                                         <div className="flex items-center gap-4">
@@ -345,7 +344,7 @@ export default function Lugares() {
                                 )}
 
                                 {selectedPromo.producto && (
-                                    <button 
+                                    <button
                                         onClick={() => handleClaim(selectedPromo.id)}
                                         className="w-full py-5 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black rounded-3xl transition-all active:scale-95 flex items-center justify-center gap-3 shadow-2xl shadow-amber-500/20 uppercase tracking-widest text-xs"
                                     >
@@ -368,7 +367,7 @@ export default function Lugares() {
                     <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-2">{t("user.lugares.title")}</h1>
                     <div className="h-1.5 w-16 md:w-20 bg-emerald-500 rounded-full"></div>
                 </div>
-                <button 
+                <button
                     onClick={() => setShowFilters(!showFilters)}
                     className={`flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold transition-all ${showFilters ? 'bg-emerald-500 text-zinc-950 shadow-lg shadow-emerald-500/20' : 'bg-zinc-900 text-white border border-zinc-800 hover:bg-zinc-800'}`}
                 >
@@ -424,7 +423,7 @@ export default function Lugares() {
                 <div className="text-center py-20 bg-red-500/5 rounded-[2.5rem] border border-red-500/20 px-6">
                     <AlertCircle size={40} className="mx-auto text-red-500 mb-4" />
                     <p className="text-red-500 font-black text-lg mb-6">Error al cargar los locales</p>
-                    <button 
+                    <button
                         onClick={() => dispatch(fetchLocales())}
                         className="px-8 py-3.5 bg-red-500 text-white font-black rounded-2xl hover:bg-red-600 transition-all active:scale-95"
                     >
@@ -436,8 +435,8 @@ export default function Lugares() {
             {localesStatus === "succeeded" && filteredLocales.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {filteredLocales.map((local) => (
-                        <div 
-                            key={local.id} 
+                        <div
+                            key={local.id}
                             onClick={() => handleSelectLocal(local)}
                             className="group relative bg-zinc-900/30 border border-zinc-800/50 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden hover:border-emerald-500/40 transition-all duration-700 cursor-pointer shadow-xl active:scale-[0.98]"
                         >
@@ -448,13 +447,13 @@ export default function Lugares() {
                                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent"></div>
-                                
+
                                 {local.promociones && local.promociones.length > 0 && (
                                     <div className="absolute top-6 left-6 bg-amber-500 text-zinc-950 p-3 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] animate-bounce z-10">
                                         <Sparkles size={20} className="fill-current" />
                                     </div>
                                 )}
-                                
+
                                 <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                                     <h3 className="text-2xl md:text-3xl font-black text-white mb-2 truncate">{local.nombre}</h3>
                                     <div className="flex flex-col gap-1 mb-6">

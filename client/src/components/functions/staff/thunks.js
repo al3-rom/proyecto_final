@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { setOrderInfo, setError, setLoading, setStatus } from "./staffSlice";
+import { updateBalance } from "../../auth/authSlice";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -29,9 +30,12 @@ export const validateOrder = createAsyncThunk(
         dispatch(setLoading(true));
         try {
             const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-            await axios.put(`${API_URL}/orders/${orderId}/validate`, {}, {
+            const response = await axios.put(`${API_URL}/orders/${orderId}/validate`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
+            if (response.data.nuevoSaldoStaff !== undefined) {
+                dispatch(updateBalance(response.data.nuevoSaldoStaff));
+            }
             dispatch(setStatus("success"));
         } catch (err) {
             const message = err.response?.data?.error || "Error validating order";
@@ -42,6 +46,10 @@ export const validateOrder = createAsyncThunk(
         }
     }
 );
+
+
+
+
 
 
 

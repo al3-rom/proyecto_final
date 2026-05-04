@@ -92,7 +92,9 @@
     "language": "Язык",
     "tipHistory": "ИСТОРИЯ ЧАЕВЫХ",
     "noTips": "Вы еще не получали чаевых.",
-    "tipFrom": "Чаевые от"
+    "tipFrom": "Чаевые от",
+    "tipTotal": "ИТОГО ПОЛУЧЕНО",
+    "viewTipHistory": "Посмотреть полную историю"
   },
   "admin": {
     "stats": {

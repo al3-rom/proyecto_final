@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMyOrders, addTip, transferOrder, sellBackOrders } from "./thunks";
 import { useTranslation } from "react-i18next";
-import { Beer, MapPin, QrCode, ChevronLeft, Info, CheckCircle, Clock, Heart, Gift, X, AlertCircle, Tag, Trash2, CheckSquare, Square, DollarSign, Wallet } from "lucide-react";
+import { Beer, MapPin, QrCode, ChevronLeft, Info, CheckCircle, Clock, Heart, Gift, X, AlertCircle, Tag, CheckSquare, Square, DollarSign, Wallet } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function ListaBebidas() {
@@ -24,6 +24,14 @@ export default function ListaBebidas() {
     const [selectedIds, setSelectedIds] = useState([]);
     const [sellLoading, setSellLoading] = useState(false);
     const [manualTip, setManualTip] = useState("");
+    const tipDebounceRef = useRef(null);
+
+    const handleAddTipDebounced = useCallback((orderId, amount) => {
+        if (tipDebounceRef.current) clearTimeout(tipDebounceRef.current);
+        tipDebounceRef.current = setTimeout(() => {
+            dispatch(addTip({ orderId, amount }));
+        }, 600);
+    }, [dispatch]);
 
     useEffect(() => {
         if (ordersStatus === "idle") {
@@ -178,7 +186,7 @@ export default function ListaBebidas() {
                                     onChange={(e) => {
                                         const val = e.target.value;
                                         setManualTip(val);
-                                        handleAddTip(currentOrder.id, val === "" ? 0 : parseFloat(val));
+                                        handleAddTipDebounced(currentOrder.id, val === "" ? 0 : parseFloat(val) || 0);
                                     }}
                                     placeholder={t("user.bebidas.manualTip") || "Otras cantidades..."}
                                     className="w-full bg-zinc-950/50 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500 text-[11px] font-bold pl-10 transition-all shadow-inner"

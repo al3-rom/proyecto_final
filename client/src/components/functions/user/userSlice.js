@@ -14,6 +14,7 @@ const userSlice = createSlice({
         orders: [],
         ordersStatus: "idle",
         error: null,
+        tipStatus: "idle",
     },
     reducers: {
         setSelectedLocal: (state, action) => {
@@ -70,10 +71,30 @@ const userSlice = createSlice({
                 state.ordersStatus = "failed";
                 state.error = action.payload || action.error.message;
             })
+            .addCase(addTip.pending, (state, action) => {
+                state.tipStatus = "loading";
+                const { orderId, amount } = action.meta.arg;
+                const index = state.orders.findIndex(o => o.id === orderId);
+                if (index !== -1) {
+                    state.orders[index]._prevPropina = state.orders[index].propina;
+                    state.orders[index].propina = amount;
+                }
+            })
             .addCase(addTip.fulfilled, (state, action) => {
+                state.tipStatus = "idle";
                 const index = state.orders.findIndex(o => o.id === action.payload.id);
                 if (index !== -1) {
                     state.orders[index].propina = action.payload.propina;
+                    delete state.orders[index]._prevPropina;
+                }
+            })
+            .addCase(addTip.rejected, (state, action) => {
+                state.tipStatus = "failed";
+                const orderId = action.meta.arg?.orderId;
+                const index = state.orders.findIndex(o => o.id === orderId);
+                if (index !== -1 && state.orders[index]._prevPropina !== undefined) {
+                    state.orders[index].propina = state.orders[index]._prevPropina;
+                    delete state.orders[index]._prevPropina;
                 }
             })
             .addCase(fetchPromociones.fulfilled, (state, action) => {

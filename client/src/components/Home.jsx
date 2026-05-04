@@ -13,6 +13,7 @@ import Employers from "./functions/admin/Employers";
 import EcoDashboard from "./functions/admin/EcoDashboard";
 import PromocionesAdmin from "./functions/admin/PromocionesAdmin";
 import ScanerQR from "./functions/staff/ScanerQR";
+import TipHistory from "./functions/staff/TipHistory";
 
 
 export default function Home() {
@@ -67,6 +68,7 @@ export default function Home() {
                         {role === 'staff' && (
                             <>
                                 <Route path="/scan" element={<ScanerQR />} />
+                                <Route path="/staff/propinas" element={<TipHistory />} />
                             </>
                         )}
                         <Route path="/perfil" element={<Perfil />} />
