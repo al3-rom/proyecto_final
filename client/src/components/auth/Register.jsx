@@ -38,7 +38,7 @@ export default function Register() {
         dispatch(register(formData));
     };
 
-    const { error, isAuthenticated } = useSelector((state) => state.auth);
+    const { error, isAuthenticated, status } = useSelector((state) => state.auth);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -219,9 +219,17 @@ export default function Register() {
                         <div>
                             <button
                                 type="submit"
-                                className="w-full bg-emerald-500/90 hover:bg-emerald-400 text-white font-bold py-3 px-4 rounded-2xl transition-all duration-300 active:scale-[0.98] border border-emerald-400/50 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] hover:-translate-y-0.5"
+                                disabled={status === 'loading'}
+                                className="w-full bg-emerald-500/90 hover:bg-emerald-400 text-white font-bold py-3 px-4 rounded-2xl transition-all duration-300 active:scale-[0.98] border border-emerald-400/50 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
-                                {t('auth.register.submitBtn')}
+                                {status === 'loading' ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                                        {t('auth.register.loading') || 'Cargando...'}
+                                    </>
+                                ) : (
+                                    t('auth.register.submitBtn')
+                                )}
                             </button>
                         </div>
                     </form>

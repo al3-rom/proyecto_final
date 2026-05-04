@@ -40,7 +40,7 @@ const Promocion = sequelize.define('Promocion', {
     limite_por_persona: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: 0 // 0 means unlimited
+        defaultValue: 0 
     },
     activo: {
         type: DataTypes.BOOLEAN,

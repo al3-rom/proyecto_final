@@ -53,8 +53,11 @@ const userSlice = createSlice({
             .addCase(buyProducto.pending, (state) => {
                 state.buyStatus = "loading";
             })
-            .addCase(buyProducto.fulfilled, (state) => {
+            .addCase(buyProducto.fulfilled, (state, action) => {
                 state.buyStatus = "succeeded";
+                if (action.payload.pedido) {
+                    state.orders.unshift(action.payload.pedido);
+                }
             })
             .addCase(buyProducto.rejected, (state, action) => {
                 state.buyStatus = "failed";
@@ -65,7 +68,7 @@ const userSlice = createSlice({
             })
             .addCase(fetchMyOrders.fulfilled, (state, action) => {
                 state.ordersStatus = "succeeded";
-                state.orders = action.payload;
+                state.orders = action.payload.pedidos || action.payload;
             })
             .addCase(fetchMyOrders.rejected, (state, action) => {
                 state.ordersStatus = "failed";

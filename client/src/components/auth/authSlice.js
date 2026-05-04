@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { login, register } from "./thunks";
 
 const getSavedUser = () => {
     const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
-    if (!userStr) return null;
+    if (!userStr || userStr === "undefined") return null;
     try { return JSON.parse(userStr); } catch { return null; }
 };
 const getSavedToken = () => localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -50,6 +51,29 @@ export const authSlice = createSlice({
                 storage.setItem('user', JSON.stringify(state.user));
             }
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(login.pending, (state) => {
+                state.status = "loading";
+                state.error = null;
+            })
+            .addCase(login.fulfilled, (state) => {
+                state.status = "succeeded";
+            })
+            .addCase(login.rejected, (state) => {
+                state.status = "failed";
+            })
+            .addCase(register.pending, (state) => {
+                state.status = "loading";
+                state.error = null;
+            })
+            .addCase(register.fulfilled, (state) => {
+                state.status = "succeeded";
+            })
+            .addCase(register.rejected, (state) => {
+                state.status = "failed";
+            });
     },
 });
 

@@ -10,7 +10,8 @@
       "submitBtn": "Sign In",
       "noAccount": "Don't have an account?",
       "registerLink": "Register",
-      "rememberMe": "Remember me"
+      "rememberMe": "Remember me",
+      "loading": "Signing in..."
     },
     "register": {
       "title": "Registration",
@@ -24,7 +25,8 @@
       "hasAccount": "Already have an account?",
       "loginLink": "Sign In",
       "acceptTerms": "I have read and accept the ",
-      "privacyPolicy": "Privacy Policy and Data Usage"
+      "privacyPolicy": "Privacy Policy and Data Usage",
+      "loading": "Creating account..."
     },
     "errors": {
       "loginIncorrect": "Incorrect password.",
@@ -259,6 +261,7 @@
       "selectBtn": "VIEW MENU",
       "cityPlaceholder": "City...",
       "streetPlaceholder": "Street or address...",
+      "balance": "Available Balance",
       "loading": "Searching for the best spots...",
       "noLocales": "No venues found with these filters.",
       "backToList": "BACK TO LIST",
@@ -275,7 +278,8 @@
       "buyBtn": "BUY NOW",
       "noProducts": "This venue has no items available yet.",
       "purchaseSuccess": "Purchase successful!",
-      "purchaseError": "Purchase error. Check your balance."
+      "purchaseError": "Purchase error. Check your balance.",
+      "loading": "Processing purchase..."
     },
     "bebidas": {
       "title": "MY DRINKS",
@@ -317,7 +321,8 @@
       "userNotFound": "User not found",
       "transferError": "Error transferring drink",
       "manualTip": "Enter manual tip...",
-      "addTip": "ADD TIP"
+      "addTip": "ADD TIP",
+      "validationSuccess": "Drink validated successfully!"
     }
   },
   "scanner": {
@@ -333,6 +338,9 @@
     "userLabel": "USER",
     "localLabel": "VENUE",
     "confirmBtn": "CONFIRM DELIVERY",
+    "confirmPickup": "CONFIRM PICK-UP",
+    "statusInGarderobe": "IN GARDEROBE",
+    "statusPending": "PENDING",
     "scanAnother": "SCAN ANOTHER",
     "scanNext": "SCAN NEXT",
     "successTitle": "ORDER SERVED!",

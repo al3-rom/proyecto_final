@@ -43,6 +43,11 @@ export const fetchMyOrders = createAsyncThunk("user/fetchMyOrders", async (_, { 
         const response = await axios.get(`${API_URL}/orders/my-orders`, {
             headers: { Authorization: `Bearer ${token}` }
         });
+        
+        if (response.data.saldo !== undefined) {
+            dispatch(updateBalance(response.data.saldo));
+        }
+        
         return response.data;
     } catch (err) {
         return rejectWithValue(err.response?.data?.error || "Error fetching orders");

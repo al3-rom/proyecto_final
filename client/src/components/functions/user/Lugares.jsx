@@ -9,7 +9,7 @@ import { updateBalance } from "../../auth/authSlice";
 export default function Lugares() {
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
-    const { locales, localesStatus, selectedLocal, selectedLocalProducts, promociones } = useSelector((state) => state.user);
+    const { locales, localesStatus, selectedLocal, selectedLocalProducts, promociones, buyStatus } = useSelector((state) => state.user);
     const { user } = useSelector((state) => state.auth);
 
     const [searchTerm, setSearchTerm] = useState("");
@@ -100,7 +100,15 @@ export default function Lugares() {
 
     if (selectedLocal) {
         return (
-            <div className="p-4 md:p-6 pb-24 max-w-5xl mx-auto animate-in fade-in duration-500">
+            <div className="p-4 md:p-6 pb-40 max-w-5xl mx-auto animate-in fade-in duration-500">
+                {buyStatus === "loading" && (
+                    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+                        <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-[2.5rem] flex flex-col items-center gap-4 shadow-2xl">
+                            <div className="w-12 h-12 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+                            <p className="text-white font-black uppercase tracking-widest text-xs">{t("user.menu.loading") || "Cargando..."}</p>
+                        </div>
+                    </div>
+                )}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div className="flex items-center gap-4">
                         <button

@@ -78,7 +78,7 @@ router.get('/by-qr/:qr_code', verificarRol('staff'), async (req, res) => {
             return res.status(403).json({ error: 'No tienes permiso para ver pedidos de este local' });
         }
 
-        res.status(200).json(pedido);
+           res.status(200).json(pedido);
     } catch (err) {
         res.status(500).json({ error: 'Error fetching order by QR', details: err.message });
     }
@@ -87,7 +87,10 @@ router.get('/by-qr/:qr_code', verificarRol('staff'), async (req, res) => {
 router.get('/my-orders', verificarRol('user'), async (req, res) => {
    try {
     const pedidos = await Pedido.findAll({
-        where: { usuario_id: req.usuario.id },
+        where: { 
+            usuario_id: req.usuario.id,
+            local_id: { [Op.ne]: null }
+        },
         include: [
             {
                 model: Producto,
@@ -99,8 +102,9 @@ router.get('/my-orders', verificarRol('user'), async (req, res) => {
         ],
         order: [['createdAt', 'DESC']]
     });
-    res.status(200).json(pedidos);
-   } catch (err) {
+        const usuario = await Usuario.findByPk(req.usuario.id, { attributes: ['saldo'] });
+        res.status(200).json({ pedidos, saldo: usuario.saldo });
+    } catch (err) {
     res.status(500).json({ error: 'Error fetching orders', details: err.message });
    }
 });
@@ -195,7 +199,11 @@ router.put('/:id/validate', verificarRol('staff'), async (req, res) => {
             ? (await Usuario.findByPk(req.usuario.id))?.saldo
             : undefined;
 
-        res.json({ pedido, nuevoSaldoStaff });
+        const nuevoSaldoCliente = Number(pedido.propina) > 0
+            ? (await Usuario.findByPk(pedido.usuario_id))?.saldo
+            : undefined;
+
+        res.json({ pedido, nuevoSaldoStaff, nuevoSaldoCliente });
     } catch (err) {
         await t.rollback();
         res.status(500).json({ error: 'Error validating order', details: err.message });

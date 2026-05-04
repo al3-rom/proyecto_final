@@ -10,7 +10,8 @@
       "submitBtn": "Iniciar Sesión",
       "noAccount": "¿No tienes una cuenta?",
       "registerLink": "Regístrate",
-      "rememberMe": "Recordar usuario"
+      "rememberMe": "Recordar usuario",
+      "loading": "Iniciando sesión..."
     },
     "register": {
       "title": "Registro",
@@ -24,7 +25,8 @@
       "hasAccount": "¿Ya tienes una cuenta?",
       "loginLink": "Inicia Sesión",
       "acceptTerms": "He leído y acepto la ",
-      "privacyPolicy": "Política de Privacidad y Uso de Datos"
+      "privacyPolicy": "Política de Privacidad y Uso de Datos",
+      "loading": "Creando cuenta..."
     },
     "errors": {
       "loginIncorrect": "La contraseña es incorrecta.",
@@ -260,6 +262,7 @@
       "selectBtn": "VER MENÚ",
       "cityPlaceholder": "Ciudad...",
       "streetPlaceholder": "Calle o dirección...",
+      "balance": "Saldo Disponible",
       "loading": "Buscando los mejores sitios...",
       "noLocales": "No se encontraron locales con esos filtros.",
       "backToList": "VOLVER AL LISTADO",
@@ -276,7 +279,8 @@
       "buyBtn": "COMPRAR",
       "noProducts": "Este local aún no tiene productos disponibles.",
       "purchaseSuccess": "¡Compra realizada con éxito!",
-      "purchaseError": "Error al procesar la compra. Verifica tu saldo."
+      "purchaseError": "Error al procesar la compra. Verifica tu saldo.",
+      "loading": "Procesando compra..."
     },
     "bebidas": {
       "title": "MIS BEBIDAS",
@@ -318,7 +322,8 @@
       "transferSuccess": "¡Consumición enviada con éxito!",
       "userNotFound": "Usuario no encontrado",
       "transferError": "Error al transferir la bebida",
-      "addTip": "AÑADIR PROPINA"
+      "addTip": "AÑADIR PROPINA",
+      "validationSuccess": "¡Consumición validada con éxito!"
     }
   },
   "scanner": {
@@ -334,10 +339,16 @@
     "userLabel": "USUARIO",
     "localLabel": "LOCAL",
     "confirmBtn": "CONFIRMAR ENTREGA",
+    "confirmPickup": "ROPA ENTREGADA",
+    "confirmDropoff": "ROPA RECOGIDA",
+    "statusInGarderobe": "EN GUARDARROPA",
+    "statusPending": "PENDIENTE",
     "scanAnother": "ESCANEAR OTRO",
     "scanNext": "ESCANEAR SIGUIENTE",
     "successTitle": "¡PEDIDO SERVIDO!",
     "successMsg": "La consumición ha sido validada correctamente.",
+    "successMsgDropoff": "La ropa ha sido recogida y guardada correctamente.",
+    "successMsgPickup": "La ropa ha sido entregada al cliente correctamente.",
     "tipReceived": "¡HAS RECIBIDO PROPINA!",
     "errorTitle": "ERROR DE LECTURA",
     "retryBtn": "REINTENTAR",

@@ -39,6 +39,37 @@ export default function ListaBebidas() {
         }
     }, [dispatch, ordersStatus]);
 
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                dispatch(fetchMyOrders());
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }, [dispatch]);
+
+    useEffect(() => {
+        let interval;
+        if (view === "qr" && selectedOrder) {
+            interval = setInterval(() => {
+                dispatch(fetchMyOrders());
+            }, 10000);
+        }
+        return () => clearInterval(interval);
+    }, [view, selectedOrder, dispatch]);
+
+    useEffect(() => {
+        if (view === "qr" && selectedOrder) {
+            const updated = orders.find(o => o.id === selectedOrder.id);
+            if (updated && (updated.estado === "Entregado" || updated.estado === "Recogido")) {
+                setView("list");
+                setTransferMsg({ type: 'success', text: t("user.bebidas.validationSuccess") || "¡Consumición validada con éxito!" });
+                setTimeout(() => setTransferMsg({ type: '', text: '' }), 3000);
+            }
+        }
+    }, [orders, selectedOrder, view, t]);
+
     const BASE_URL = import.meta.env.VITE_API_URL.replace("/api", "");
 
     const getProductName = (order) => {
@@ -125,37 +156,37 @@ export default function ListaBebidas() {
         const currentOrder = orders.find(o => o.id === selectedOrder.id) || selectedOrder;
         return (
             <div
-                className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
+                className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto"
                 onClick={() => setView("list")}
             >
                 <div
-                    className="max-w-sm w-full animate-in zoom-in-95 duration-300"
+                    className="max-w-sm w-full animate-in zoom-in-95 duration-300 my-auto"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <button
                         onClick={() => setView("list")}
-                        className="flex items-center gap-2 text-zinc-400 hover:text-white mb-6 transition-colors group px-2"
+                        className="flex items-center gap-2 text-zinc-400 hover:text-white mb-4 transition-colors group px-2"
                     >
                         <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
                         <span className="font-black uppercase tracking-widest text-[10px]">{t("user.bebidas.backToList")}</span>
                     </button>
 
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-[2.5rem] p-6 text-center relative overflow-hidden shadow-2xl">
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-[2.5rem] p-5 sm:p-6 text-center relative overflow-hidden shadow-2xl">
                         <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 blur-[60px] rounded-full"></div>
 
-                        <h2 className="text-2xl font-black text-white mb-1">{t("user.bebidas.qrTitle")}</h2>
+                        <h2 className="text-xl sm:text-2xl font-black text-white mb-1">{t("user.bebidas.qrTitle")}</h2>
                         <p className="text-zinc-500 text-[10px] font-bold leading-tight mb-4">{t("user.bebidas.qrSubtitle")}</p>
 
-                        <div className="bg-white p-6 rounded-[2.5rem] inline-block mb-8 shadow-xl">
+                        <div className="bg-white p-4 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] inline-block mb-6 shadow-xl">
                             <img
                                 src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${currentOrder.qr_code}`}
                                 alt="QR Code"
-                                className="w-48 h-48 sm:w-64 sm:h-64 object-contain"
+                                className="w-40 h-40 sm:w-56 sm:h-56 object-contain"
                             />
                         </div>
 
-                        <div className="bg-zinc-950/50 rounded-2xl p-6 border border-zinc-800/50 mb-6">
-                            <p className="text-emerald-400 font-black text-xl mb-1">{getProductName(currentOrder)}</p>
+                        <div className="bg-zinc-950/50 rounded-2xl p-4 sm:p-6 border border-zinc-800/50 mb-5">
+                            <p className="text-emerald-400 font-black text-lg sm:text-xl mb-1">{getProductName(currentOrder)}</p>
                             <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-black flex items-center justify-center gap-2">
                                 <MapPin size={12} /> {currentOrder.local?.nombre}
                             </p>
@@ -206,22 +237,22 @@ export default function ListaBebidas() {
         const currentOrder = orders.find(o => o.id === selectedOrder.id) || selectedOrder;
         return (
             <div
-                className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
+                className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto"
                 onClick={() => setView("list")}
             >
                 <div
-                    className="max-w-sm w-full animate-in slide-in-from-bottom-10 duration-300"
+                    className="max-w-sm w-full animate-in slide-in-from-bottom-10 duration-300 my-auto"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <button
                         onClick={() => setView("list")}
-                        className="flex items-center gap-2 text-zinc-400 hover:text-white mb-6 transition-colors group px-2"
+                        className="flex items-center gap-2 text-zinc-400 hover:text-white mb-4 transition-colors group px-2"
                     >
                         <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
                         <span className="font-black uppercase tracking-widest text-[10px]">{t("user.bebidas.backToList")}</span>
                     </button>
 
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-[2.5rem] overflow-hidden shadow-2xl">
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-[3rem] overflow-hidden shadow-2xl relative">
                         <div className="aspect-square sm:aspect-video relative">
                             <img
                                 src={currentOrder.producto?.foto_url ? `${BASE_URL}${currentOrder.producto.foto_url}` : "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop"}
@@ -297,7 +328,7 @@ export default function ListaBebidas() {
     const groups = Object.values(groupedOrders);
 
     return (
-        <div className="max-w-6xl mx-auto px-4 pb-24 md:pb-12 animate-in fade-in duration-500">
+        <div className="max-w-6xl mx-auto px-4 pb-40 md:pb-12 animate-in fade-in duration-500">
             <div className="mb-10 mt-4 flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                     <h1 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter uppercase">{t("user.bebidas.title")}</h1>
@@ -388,20 +419,20 @@ export default function ListaBebidas() {
                         <span className="font-black uppercase tracking-widest text-[10px]">{t("user.lugares.backToList")}</span>
                     </button>
 
-                    <div className="flex items-center gap-4 mb-10 overflow-hidden">
-                        <div className="h-px flex-1 bg-gradient-to-r from-emerald-500/50 to-transparent"></div>
-                        <h2 className="text-2xl md:text-3xl font-black text-white flex items-center gap-3 shrink-0 uppercase tracking-tight">
-                            <MapPin className="text-emerald-500" size={24} />
-                            {groupedOrders[selectedLocalId].nombre}
-                        </h2>
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
+                        <div className="flex items-center gap-3">
+                            <MapPin className="text-emerald-500 shrink-0" size={24} />
+                            <h2 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tight truncate max-w-[200px] sm:max-w-none">
+                                {groupedOrders[selectedLocalId].nombre}
+                            </h2>
+                        </div>
                         <button
                             onClick={() => { setSelectionMode(!selectionMode); setSelectedIds([]); }}
-                            className={`flex items-center gap-2 px-5 py-2.5 rounded-full transition-all border font-black text-[10px] uppercase tracking-widest ${selectionMode ? 'bg-amber-500 text-zinc-950 border-amber-500 shadow-lg shadow-amber-500/20' : 'bg-zinc-900 text-white border-zinc-800 hover:border-emerald-500/50'}`}
+                            className={`w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-2xl transition-all border font-black text-[10px] uppercase tracking-widest ${selectionMode ? 'bg-amber-500 text-zinc-950 border-amber-500 shadow-lg shadow-amber-500/20' : 'bg-zinc-900 text-white border-zinc-800 hover:border-emerald-500/50'}`}
                         >
                             {selectionMode ? <X size={16} /> : <Tag size={16} />}
                             {selectionMode ? t("user.bebidas.backToList") : t("user.bebidas.sellBtn")}
                         </button>
-                        <div className="h-px flex-1 bg-gradient-to-l from-emerald-500/50 to-transparent"></div>
                     </div>
 
                     {selectionMode && (
@@ -538,23 +569,23 @@ export default function ListaBebidas() {
                     </div>
 
                     {selectionMode && selectedIds.length > 0 && (
-                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-[95%] max-w-lg z-[200] animate-in slide-in-from-bottom-10">
-                            <div className="bg-zinc-900/80 backdrop-blur-2xl border border-amber-500/30 p-6 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10">
-                                <div className="flex items-center justify-between mb-6">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center text-zinc-950 shadow-lg shadow-amber-500/20">
-                                            <DollarSign size={28} />
+                        <div className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[92%] max-w-sm z-[200] animate-in slide-in-from-bottom-10">
+                            <div className="bg-zinc-900/80 backdrop-blur-2xl border border-amber-500/30 p-5 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10">
+                                <div className="flex items-center justify-between mb-5">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-11 h-11 bg-amber-500 rounded-xl flex items-center justify-center text-zinc-950 shadow-lg shadow-amber-500/20">
+                                            <DollarSign size={20} />
                                         </div>
                                         <div>
-                                            <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-0.5">{t("user.bebidas.refundAmount")}</p>
-                                            <p className="text-3xl font-black text-white leading-none">{calculateTotalRefund()}€</p>
+                                            <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest mb-0.5">{t("user.bebidas.refundAmount")}</p>
+                                            <p className="text-2xl font-black text-white leading-none">{calculateTotalRefund()}€</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-xs font-black text-amber-500 uppercase tracking-tight mb-1">{selectedIds.length} {t("nav.bebidas")}</p>
+                                        <p className="text-[10px] font-black text-amber-500 uppercase tracking-tight mb-1">{selectedIds.length} {t("nav.bebidas")}</p>
                                         <button 
                                             onClick={() => setSelectedIds([])}
-                                            className="text-[9px] text-zinc-500 hover:text-white font-black uppercase tracking-widest transition-colors"
+                                            className="text-[8px] text-zinc-500 hover:text-white font-black uppercase tracking-widest transition-colors"
                                         >
                                             {t("user.bebidas.backToList")}
                                         </button>
@@ -563,9 +594,9 @@ export default function ListaBebidas() {
                                 <button
                                     onClick={handleSellBack}
                                     disabled={sellLoading}
-                                    className="w-full py-5 bg-white hover:bg-amber-500 hover:text-zinc-950 text-zinc-950 font-black rounded-3xl transition-all flex items-center justify-center gap-3 shadow-2xl active:scale-[0.98] uppercase tracking-widest text-xs"
+                                    className="w-full py-3.5 bg-white hover:bg-amber-500 hover:text-zinc-950 text-zinc-950 font-black rounded-2xl transition-all flex items-center justify-center gap-3 shadow-2xl active:scale-[0.98] uppercase tracking-widest text-[10px]"
                                 >
-                                    {sellLoading ? <div className="w-5 h-5 border-2 border-zinc-950/20 border-t-zinc-950 rounded-full animate-spin"></div> : <Tag size={18} />}
+                                    {sellLoading ? <div className="w-4 h-4 border-2 border-zinc-950/20 border-t-zinc-950 rounded-full animate-spin"></div> : <Tag size={16} />}
                                     {t("user.bebidas.sellBtn")} {selectedIds.length} {t("nav.bebidas")}
                                 </button>
                             </div>
@@ -614,6 +645,12 @@ export default function ListaBebidas() {
                             </div>
                         </div>
                     )}
+                </div>
+            )}
+            {transferMsg.text && (
+                <div className={`fixed top-24 left-1/2 -translate-x-1/2 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-top-10 duration-300 z-[2000] w-[90%] max-w-sm ${transferMsg.type === "success" ? "bg-emerald-500 text-zinc-950" : "bg-red-500 text-white"}`}>
+                    {transferMsg.type === "success" ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+                    <span className="font-bold text-sm">{transferMsg.text}</span>
                 </div>
             )}
         </div>

@@ -134,11 +134,24 @@ export default function ScanerQR() {
                         <div className="bg-zinc-900/30 border border-zinc-800 rounded-[2.5rem] overflow-hidden shadow-2xl">
                             <div className="aspect-square relative bg-zinc-950 flex items-center justify-center p-10">
                                 <img src={orderInfo.producto?.foto_url ? `${BASE_URL}${orderInfo.producto.foto_url}` : ""} className="max-w-full max-h-full object-contain" alt="Producto" />
-                                {orderInfo.validated_at && (
+                                {((orderInfo.estado === 'Entregado' || orderInfo.estado === 'Recogido') || (orderInfo.producto?.tipo === 'bebida' && orderInfo.validated_at)) && (
                                     <div className="absolute inset-0 bg-red-500/20 backdrop-blur-sm flex items-center justify-center p-6 text-center">
                                         <span className="bg-red-500 text-white font-black px-6 py-3 rounded-2xl shadow-2xl uppercase text-xs tracking-widest">{t("scanner.alreadyValidated")}</span>
                                     </div>
                                 )}
+                                <div className="absolute top-4 right-4">
+                                    {orderInfo.estado === 'En Guardarropa' ? (
+                                        <div className="bg-amber-500 text-zinc-950 px-3 py-1.5 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 shadow-lg">
+                                            <div className="w-1.5 h-1.5 bg-zinc-950 rounded-full animate-pulse"></div>
+                                            {t("scanner.statusInGarderobe")}
+                                        </div>
+                                    ) : orderInfo.estado === 'Pendiente' ? (
+                                        <div className="bg-emerald-500 text-zinc-950 px-3 py-1.5 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 shadow-lg">
+                                            <div className="w-1.5 h-1.5 bg-zinc-950 rounded-full animate-pulse"></div>
+                                            {t("scanner.statusPending")}
+                                        </div>
+                                    ) : null}
+                                </div>
                             </div>
                             <div className="p-8">
                                 <div className="flex justify-between items-start mb-2">
@@ -161,9 +174,13 @@ export default function ScanerQR() {
                                         <div><p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest">{t("scanner.localLabel")}</p><p className="text-white font-black uppercase text-xs">{orderInfo.local?.nombre}</p></div>
                                     </div>
                                 </div>
-                                {!orderInfo.validated_at ? (
+                                {(orderInfo.estado === 'Pendiente' || orderInfo.estado === 'En Guardarropa') ? (
                                     <button onClick={handleValidate} disabled={loading} className="w-full py-5 bg-emerald-500 text-zinc-950 font-black rounded-2xl transition-all active:scale-95 flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/20 uppercase text-xs tracking-widest">
-                                        {loading ? <Loader2 className="animate-spin" /> : <CheckCircle size={20} />} {t("scanner.confirmBtn")}
+                                        {loading ? <Loader2 className="animate-spin" /> : <CheckCircle size={20} />} 
+                                        {orderInfo.estado === 'En Guardarropa' 
+                                            ? t("scanner.confirmPickup") 
+                                            : (orderInfo.producto?.tipo === 'guardarropa' ? t("scanner.confirmDropoff") : t("scanner.confirmBtn"))
+                                        }
                                     </button>
                                 ) : (
                                     <button onClick={handleReset} className="w-full py-5 bg-zinc-900 text-white font-black rounded-2xl transition-all flex items-center justify-center gap-3 uppercase text-xs tracking-widest">
@@ -182,7 +199,12 @@ export default function ScanerQR() {
                         <CheckCircle size={48} className="text-zinc-950" />
                     </div>
                     <h2 className="text-3xl font-black text-white mb-4 uppercase tracking-tighter leading-none">{t("scanner.successTitle")}</h2>
-                    <p className="text-zinc-500 font-bold mb-6 uppercase text-[10px] tracking-widest">{t("scanner.successMsg")}</p>
+                    <p className="text-zinc-500 font-bold mb-6 uppercase text-[10px] tracking-widest">
+                        {orderInfo?.producto?.tipo === 'guardarropa' 
+                            ? (orderInfo.estado === 'En Guardarropa' ? t("scanner.successMsgDropoff") : t("scanner.successMsgPickup"))
+                            : t("scanner.successMsg")
+                        }
+                    </p>
                     
                     {Number(orderInfo?.propina) > 0 && (
                         <div className="bg-amber-500/10 border border-amber-500/20 p-6 rounded-3xl mb-12 animate-in slide-in-from-bottom-4 duration-700">

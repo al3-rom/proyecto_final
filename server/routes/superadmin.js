@@ -60,21 +60,19 @@ router.delete('/locales/:id', async (req, res) => {
     try {
         const localId = req.params.id;
         
-        // 1. Desvincular productos (se quedan huérfanos para reuso)
-        await Producto.update({ local_id: null }, { where: { local_id: localId } });
         
-        // 2. Eliminar promociones vinculadas (son específicas del local)
+        await Producto.destroy({ where: { local_id: localId } });
+        
         const Promocion = require('../models/Promocion');
         await Promocion.destroy({ where: { local_id: localId } });
         
-        // 3. Desvincular pedidos (para mantener historial sin errores de FK)
         const Pedido = require('../models/Pedido');
-        await Pedido.update({ local_id: null }, { where: { local_id: localId } });
+        await Pedido.destroy({ where: { local_id: localId } });
         
-        // 4. Eliminar usuarios vinculados (admins y trabajadores)
+        
         await Usuario.destroy({ where: { local_id: localId } });
         
-        // 5. Eliminar el local
+        
         const deleted = await Local.destroy({ where: { id: localId } });
         
         if (deleted) {
